@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------------------------
+Title			TOCS - Workflow
+Last Revised	2014/04/26
+Created			unknown
+Summary			This document describes the procedure of handling a connection to a user/player of
+				the TOCS-Server (TOCS: Text-only Counter Strike). It describes the flow from the 
+				view of one connection.
+----------------------------------------------------------------------------------------------------
+
+User connects to Server.
+
+Server creates new <Connection>-Object in a new <Thread> to serve the user.
+Afterwards it continues listening.
+
+<Connection> requests information that is necessary for a valid initialisation.
+	- Server password, if the server is secured by a password. This feature is not mandority yet and 
+	  will be implemented later
+	- The desired nickname that will be displayed to other players and used to identify the player. 
+	  This name needs to be validated as the player might choose a hard-to-type nickname which is 
+	  kind of cheating.
+	- The desired team (terrorists, counter-terrorists or auto-assignment)
+
+<Connection> sends the player to the lobby subsystem. The player can choose its skin (no mandority 
+feature) and equipment (maybe also the spawn point, but this is not Battlefield). When the player 
+finished its configurations, he/she can switch to "ready".
+The second player who reaches the lobby starts a countdown from 2 mins.
+
+When the countdown is over or all players switched to "ready", the game launches. The last 10 
+seconds of the countdown are printed to every player in the lobby.
+
+The player leaves the lobby and is placed at the spawnpoint on the map.
+
+When the player enters an instruction, the <Connection> delegates the string to the instruction 
+interpreter, which will perform basic replacements and evaluations and eventually delegate it to the 
+parser chain. Finally the parsed instruction will be applied.
+
+When the player dies or gets damage, he will be notified by a appropriate console output. A death 
+player is send back into the lobby, switched to "not ready". Additionally he looses all of his 
+equipment.
+
+The only game mode available is "bomb defusion". When the player places a bomb, a countdown from 
+1 min is started and all participating players on the map are notified.
+
+When the player defuses the terrorists bomb successfully (which will take about 5 seconds, players 
+in the same room are notified) the game ends and all players on the map are send back to the lobby 
+and a new 2 mins countdown is started. The counter-terrorists team gains $1000, the terrorists team 
+gains $200.
+
+When bomb detonates, all players in the same room are killed and the game ends. All remaining 
+players are sent back to the lobby and a new 2 mins countdown is started. The terrorists team gains 
+$1000, the terrorists team gains $200.
+
+When all players left the lobby and cancelled thier <Connection>s, the 2 mins countdown is stopped 
+and not restarted until another two players enter the lobby again.

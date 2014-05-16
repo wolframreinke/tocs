@@ -1,0 +1,144 @@
+----------------------------------------------------------------------------------------------------
+Title			TOCS - Instruction Parsing
+Last Revised	2014/04/26
+Created			2014/04/26
+Summary			This document describes the procedure of parsing the player's input in TOCS (Text-
+				only Counter Strike). Espeacially, expected input and desired output are described.
+				Some Examples are given as well.
+----------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------
+Contents
+----------------------------------------------------------------------------------------------------
+
+1				Instruction Parsing System
+2				Input format
+3				Desired Output
+4				Examples
+
+----------------------------------------------------------------------------------------------------
+1 Instruction Parsing System
+----------------------------------------------------------------------------------------------------
+
+*	The Instruction Parsing System [IPS] is the system which takes the input string (see (2)) and
+	cumputes the desired output (see (3)). The IPS is required to be highly extendable. This system
+	is an integral part of the TOCS-engine.
+	The front-end class of the IPS is the Instruction Parser [IP]. This name was chosen, as the 
+	players input is a command in most cases. The IP manages a set of distinct parsers, which have
+	one interface in common. For each instruction type, there is a corresponding parser. To add
+	new functionality, its only necessary to create a new implementation of the common interface and
+	add it to the IP.
+	Each of these parsers provides a set of verbs, which are related to this parser. For instance 
+	the "open"-parser can handle "open" and "close". Moreover, it provides a <parse> method wich is
+	called with the users input string (with some default replacements performed by the IP).
+	
+	The IPS also includes some basic implementations of the parsers' common interface. These default
+	implementations must be abstract as they will no provide fill functionality of a parser. They
+	may only contain useful protected methods, which are used by subclasses.
+	These useful methods may for instance be able to locate <Node> objects in the game using thier 
+	names, or to tokenize the users input as a lexical analyser would.
+
+----------------------------------------------------------------------------------------------------
+2 Input Format
+----------------------------------------------------------------------------------------------------
+
+* 	The input of the IPS is a user-supplied string. It consists of a leading verb, a prefix and a 
+	set of arguments. 
+	The verb is only used by the IP to figure out, which of the parsers is able to process the 
+	input.
+	Example: 	in "open the door"
+				"open" is the verb of this instruction.
+				
+	The prefix consists of the first words after the verb, that are not preceeded by a preposition 
+	(more later).
+	Example:	in "open the door with the key"
+				"door" is the prefix, as key is preceeded by a preposition ("with").
+				
+	The arguments consist of a preceeding preposition and its subjects.
+	Example:	in "open the door with the key of the keyring"
+				{"with", "key"} and {"of", "keyring"} are the instruction's arguments.
+
+*	The input string is expected to have the following syntax:
+	
+	<instruction>	::=	<verb> <prefix> <arguments>
+	
+	<verb>			::= "open" | "take" | ... 
+	<prefix>		::= *node identifiers* | EPSILON
+	<arguments>		::= <argument> <arguments> | EPSILON
+	<argument>		::= <preposition> *node identifiers*
+	<preposition>	::= "with" | "at" | "of" | ...
+	
+*	There are far less prepositions in the IPS than in the english language as one or more of the
+	"original" prepositions are grouped into a IPS-preposition. In fact, there four known
+	prepositions:
+	
+	*	WITH	This prepositions expresses, that the instruction has to be performed using a
+				special item. That is, the subject of a WITH-argument can be seen as the parameter
+				of this option.
+				The possibility of locking <Node>s is provided by a subclass of <Node> called 
+				<LockableNode>. This class has the method <lock(Node with)>. The subject of a 
+				WITH-argument is passed to this method as the parameter. Other mechanisms that need
+				a parameter are constructed equally.
+	*	TO		Specifies the target of an instruction. E.g. in "thow the ball at the tree" the
+				target of the operation is the tree (which is also the TO-argument in this phrase).
+	*	OF		This preposition indicates, that the <Node> is a child of another <Node>, so its
+				used to qualify <Node> names in the users input. Example: in "open the box on the
+				desk" instructs the IPS to first locate the desk and than the box local to this
+				desk.
+
+----------------------------------------------------------------------------------------------------
+3 Desired Output
+----------------------------------------------------------------------------------------------------
+
+*	The eventual aim of the IPS is apparently to perform the users instructions. Therefore, there is
+	no real "output". In this chapter, the output provided by basic implementations of the parsers'
+	common interface is described. This output can be used by subclasses (which then perform the
+	last step and execute the instruction) to easily parse the input.
+	
+* 	The desired output of this medium layer is
+	*	A verb in form of a string, which can be used to control the parsers workflow (e.g. the
+		verb "open" makes an "open"-parser opening an <OpenableNode> object, but the verb "close"
+		makes the same parser closing the <OpenableNode>)
+	*	A prefix, i.e. a list of <Node>s found in the original prefix of the player's input 
+		(see (2)). If one of the strings in the input prefix could not be resolved to a <Node>
+		object, the unchanged string is used.
+	*	A set of arguments, each containig a preposition (one of WITH, OF, TO) and a set of 
+		<Node>s which belong to this preposition. If one of the strings in the argument's subject
+		could not be resolved to a <Node>, the unchanged string is used.
+		
+----------------------------------------------------------------------------------------------------
+4 Examples
+----------------------------------------------------------------------------------------------------
+
+*	The following examples demonstrate the functionalities of the IPS.
+
+( Example 1 )
+
+	"unlock the box on the desk with a key from the keyring"
+	
+	is first reorganized into:
+	VERB		unlock
+	PREFIX		desk -> box
+	ARGUMENTS	WITH keyring -> key
+	
+	and eventually resolved to <Node>s:
+	VERB		unlock
+	PREFIX		the desired box
+	ARGUMENTS	WITH the desired key
+	
+( Example 2 )
+
+	"shoot at tun9st3n and ju14n"
+	
+	is first reorganized into:
+	VERB		shoot
+	PREFIX		NONE
+	ARGUMENT	TO tun9st3n
+				TO jul14n
+				
+	and eventually resolved to <Node>s:
+	VERB		shoot
+	PREFIX		NONE
+	ARGUMENT	TO the player tun9st3n
+				TO the player jul14n

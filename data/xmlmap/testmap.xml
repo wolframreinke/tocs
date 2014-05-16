@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<map 
+	name="testmap" 
+	version="1.0" 
+	xmlns="tocsdb.html" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="tocsdb.html xml.xsd ">
+	
+  <spawnTerrorists>			map.gate1				</spawnTerrorists>
+  <spawnCounterterrorists>	map.voctrainCellar		</spawnCounterterrorists>
+  <bombPoint>				map.caf					</bombPoint>
+  
+  <root type="Node">
+  	<refID>	map		</refID>
+    <id>	map		</id>
+    <desc>
+    	THIS ELEMENT SHOULD BE INVISIBLE
+    </desc>
+    
+    <node type="Room">
+    	<refID>	map.caf				</refID>
+    	<id>	Employee Cafeteria	</id>
+    	<name>	buttery				</name>
+    	<name>	mess hall			</name>
+    	<name>	cafeteria			</name>
+    	<desc>
+    		The employee cafeteria is completely deserted. Some of the wooden tables are 
+    		upset and the meals of the escaped employees are spread over the ground. The
+    		cold wind drifts small pieces of paper through the opened main entrance. A
+    		passage behind the cofferoom leads upstairs to some offices.
+    		This cafeteria seems to be the ideal place for the terrorists to plant the 
+    		bomb.
+    	</desc>
+    	
+    	<west>	map.beforeCaf		</west>
+    	<up>	map.passOffice		</up>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.passOffice		</refID>
+    	<id>	Pass Office			</id>
+    	<name>	office				</name>
+    	<name>	issuing office		</name>
+    	<desc>
+    		The pass office of Airbus' site Manching is a small room above the cafeteria.
+    		Here is enough space for about five employees to work on issuing problems. 
+    		Some of the computers are not switched of, one of the workers has even forgotten
+    		to lock its PC.
+    	</desc>
+    	
+    	<down>	map.caf				</down>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.beforeCaf		</refID>
+    	<id>	In Front of the Cafeteria</id>
+    	<name>	square				</name>
+    	<desc>
+    		You're on the open space in front of the cafeteria, which hulks up in the
+    		east. The open door invites you to escape from the icy wind that waves debries
+    		and pieces of paper from left to right.
+    		In the west, the passage between to office buildings opens into a wide crossing.
+    	</desc>
+    	
+    	<west>	map.crossing		</west>
+    	<east>	map.caf				</east>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.crossing		</refID>
+    	<id>	Crossing			</id>
+    	<desc>
+    		You're on a wide crossing, leading from the employee cafeteria in the east to
+    		both, the barracks in the east and the great black ventilation block in the
+    		north.
+    	</desc>
+    	
+    	<north>	map.ventilation		</north>
+    	<west>	map.barracks		</west>
+    	<east>	map.beforeCaf		</east>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.barracks		</refID>
+    	<id>	At the Barracks		</id>
+    	<desc>
+    		You're at the passage leading past the EF Assembly Line hall to the vocational
+    		training center in the west. Around you, there are low-rise containers with
+    		engineering offices inside. Between two containers in the north, a route leads
+    		over the celt's wall. To the east, the passage opens into a wide crossing.
+    	</desc>
+    	
+    	<west>	map.lake			</west>
+    	<east>	map.crossing		</east>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.lake			</refID>
+    	<id>	Extinguishing Pond	</id>
+    	<desc>
+    		You're at the extinguishing pond in front of the vocational training center,
+    		which hulks up to the west. The bleak wind creates smooth waves on the dark,
+    		grey water.
+    		To the east, a small gap between the abandoned cars opens into a passage,
+    		leading to the engineering containers.
+    	</desc>
+    	
+    	<west>	map.voctrain		</west>
+    	<east>	map.barracks		</east>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.voctrain		</refID>
+    	<id>	Vocational Training Center</id>
+    	<desc>
+    		This is the first floor of the vocational training center of Airbus' site 
+    		Manching. On the wall on the right hand side, there are numerous notices,
+    		including the menus currently selled in the employee cafeteria.
+    		From here, you can go downstairs, to the building's cellar, upstairs, to
+    		visit the vocational training advisor's offices and west, to leave the
+    		building.
+    	</desc>
+ 		
+ 		<node type="Node">
+ 			<refID>	map.voctrain.notice	</refID>
+ 			<id>	Cafeteria Menu		</id>
+ 			<name>	notice				</name>
+ 			<name>	menu				</name>
+ 			<name>	plan				</name>
+ 			<name>	menu plan			</name>
+ 			<desc>
+ 				"Cafeteria is closed today due to terroristic attacks."
+ 			</desc>
+ 			<weight>1					</weight>
+ 		</node>
+ 		
+ 		<west>	map.lake			</west>
+ 		<up>	map.voctrainOffice	</up>
+ 		<down>	map.voctrainCellar	</down>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.voctrainOffice	</refID>
+    	<id>	Advisor's Offices	</id>
+    	<desc>
+    		You're in the office of two Airbus DS employees which are vocational
+    		training advisors, as the sign outside the room states. There are two
+    		desks in the center of the room and desk chairs on both sides. In the left
+    		corner, there is a big chest.
+    		The only way leads downstairs.
+    	</desc>
+    	
+    	<node type="Node">
+    		<refID>	map.voctrainOffice.sign	</refID>
+    		<id>	Identification Sign		</id>
+    		<name>	label					</name>
+    		<name>	sign					</name>
+    		<name>	notice					</name>
+    		<desc>
+    			"Christian Eckl - CHOG2; Francois Maurice - CHOG2;"
+    		</desc>
+    	</node>
+    	
+    	<node type="LockableNode">
+    		<refID>	map.voctrainOffice.chest</refID>
+    		<id>	Large Chest				</id>
+    		<name>	chest					</name>
+    		<name>	box						</name>
+    		<name>	big chest				</name>
+    		<desc>
+    			This is a large, old chest, strengthened with stainless steel.
+    		</desc>
+    		
+    		<node type="Node">
+    			<refID>	map.voctrainOffice.chest.maurice</refID>
+    			<id>	Francois Maurice				</id>
+    			<name>	francois						</name>
+    			<name>	maurice							</name>
+    			<name>	person							</name>
+    			<desc>
+    				Inside the chest, you can see a medium aged man, clothed with a ironed
+    				shirt and shoulder-lengthened dark hair. He looks surprised at you.
+    			</desc>
+    		</node>
+    		
+    		<closed>	true				</closed>
+    		<locked>	true				</locked>
+    		<key>		map.voctrainCellar.key	</key>
+    	</node>
+    	
+    	<down>	map.voctrain		</down>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.voctrainCellar	</refID>
+    	<id>	Cellar				</id>
+    	<desc>
+    		You're in the cellar of the vocational training center. A flickering flouroscent
+    		tube creates an anxious atmosphere in the passages which formerly led to the 
+    		employee's showers on the left hand side and the snack room on the right hand
+    		side. Daylight falls in from upstairs.
+    	</desc>
+    	
+    	<node type="Node">
+    		<refID>	map.voctrainCellar.key	</refID>
+    		<id>	Golden Key				</id>
+    		<name>	key						</name>
+    		<desc>
+    			The golden coating chips already off and reveals the corroded iron, the
+    			heavy key is actually made of. 
+    		</desc>
+    		<weight>1						</weight>
+    	</node>
+    	
+    	<up>	map.voctrain				</up>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.ventilation		</refID>
+    	<id>	Ventilation Cube	</id>
+    	<desc>
+    		Near the huge, black ventilation cube of building 361, two paths join into one,
+    		leading to the wide crossing in the south. The first one comes from Gate 1 in 
+    		the north, the second comes past the cube from building 632 to the northwest. 
+    		Warm steam streams out of the ventilation system, swirled by the piercing wind.
+    	</desc>
+    	
+    	<north>	map.gate1			</north>
+    	<south>	map.crossing		</south>
+    	<west>	map.before362		</west>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.before362		</refID>
+    	<id>	At Building 362		</id>
+    	<desc>
+    		You're on the square before building 362, the huge engineering building which's
+    		glass front hulks up in the west. By the route that leads eastwards to the 
+    		site's main entrance, the small Foodbox container in the north exhales the 
+    		mouth-watering smell of warm snacks. To the south, a tiny bridge spans over the
+    		celt's wall and a road branches southeastwards to building 361's ventilation
+    		cube.
+    	</desc>
+    	
+    	<north>	map.foodbox			</north>
+    	<south>	map.barracks		</south>
+    	<east>	map.gate1			</east>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.foodbox			</refID>
+    	<id>	Foodbox				</id>
+    	<desc>
+    		You're inside the site's northern foodbox. No humans can be seen, but a beef
+    		and pork loaf (as consumed very often in souther parts of Germany, as well as
+    		in Austria) exhales a tasty smell from inside an oven. In the shelves next to 
+    		the exit in the south, a cold pretzel with butter can be found.
+    	</desc>
+    	
+    	<node type="Node">
+    		<refID>	map.foodbox.pretzel	</refID>
+    		<id>	Pretzel				</id>
+    		<name>	butter pretzel		</name>
+    		<desc>
+    			This is a perfectly shaped pretzel, scattered with salt nuggets and
+    			coated with chives-refined butter.
+    		</desc>
+    		<weight>1					</weight>
+    	</node>
+    	
+    	<node type="OpenableNode">
+    		<refID>	map.foodbox.oven	</refID>
+    		<id>	Oven				</id>
+    		<name>	furnace				</name>
+    		<name>	cooking				</name>
+    		<name>	stove				</name>
+    		<desc>
+    			This little oven is used to bake southern Germanie's traditional beef
+    			and pork loafes in the foodbox. It's currently switched of.
+      		</desc>
+      		
+      		<node type="Node">
+      			<refID>	map.foodbox.oven.leberkas	</refID>
+      			<id>	beef and pork loaf (as typically consumed in souther parts of Germany as well as in Austria and the Switzerlands) </id>
+      			<name>	beef and pork loaf			</name>
+      			<name>	loaf						</name>
+      			<name>	leberkas					</name>
+      			<name>	leberkäse					</name>
+      			<desc>
+      				Yummy.
+      			</desc>
+      			
+      			<weight>3							</weight>
+      		</node>
+    	</node>
+    	
+    	<south>	map.before362		</south>
+    </node>
+    
+    <node type="Room">
+    	<refID>	map.gate1			</refID>
+    	<id>	Gate 01				</id>
+    	<desc>
+    		You're at gate 01 of Airbus DS site Manching, which is the main entrance
+    		to the plant. An ice-cold wind causes a decent rustling of leaves in the 
+    		distant trees. The street through the entrance leads southwards to a 
+    		massive black ventilation system. A cobbled path branches in the west to 
+    		building 362.
+    	</desc>
+    	
+    	<south>	map.ventilation		</south>
+    	<west>	map.before362		</west>
+    </node>
+  </root>
+  
+</map>

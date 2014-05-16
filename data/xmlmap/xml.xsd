@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="tocsdb.html" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tocs="tocsdb.html">
+
+    <complexType name="node_t">
+    	<sequence>
+    		<element name="refID" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The reference ID of this node. The value of this
+    					element is never displayed to the user but used
+    					to link the nodes during map loading.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="id" type="string" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The identifier of this node. This value is
+    					displayed whenever the game wants to refer to
+    					this node, so its the most important identifier.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="name" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Alternative names for this node. The user might
+    					use these names to refer to this node.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="desc" type="string" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The node's description. This description is
+    					displayer when the user requests a description
+    					of this node.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="weight" type="int" minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>The weight of this node. The default value is -1, which means, that players cannot pick this node up. The maximum weight a user can carry is 50 (kg).</documentation>
+    			</annotation></element>
+    		<element name="node" type="tocs:node_t" minOccurs="0"
+    			maxOccurs="unbounded">
+    			<annotation>
+    				<documentation>
+    					The child nodes of this nodes. A box may, for
+    					instance, contain one or more smaller nodes.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="north" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="south" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="west" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="east" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="northwest" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="northeast" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="southwest" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="southeast" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="up" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="down" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					The refID of a Room-Node
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="closed" type="boolean" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Wheather this OpenableNode is closed. If you
+    					want this node to be closeable, you have to use
+    					the type "OpenableNode".
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="locked" type="boolean" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Whether this node is locked or not. If you want
+    					this node to be lockable, you have to choose the
+    					type "LockableNode".
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="key" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The key that can be used to lock/unlock this
+    					LockableNode. If you want this node to be
+    					lockable, you have to choose the type
+    					"LockableNode".
+    				</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    	<attribute name="type" use="optional">
+    		<annotation>
+    			<documentation>
+    				The type of this node. Permitted values are Node
+    				(default), Room (has doors), OpenableNode (can be
+    				opened/closed) and LockableNode (can be
+    				locked/unlocked).
+    			</documentation>
+    		</annotation>
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="Node"></enumeration>
+    				<enumeration value="Room"></enumeration>
+    				<enumeration value="OpenableNode"></enumeration>
+    				<enumeration value="LockableNode"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+
+    <complexType name="map_t">
+    	<sequence>
+    		<element name="spawnTerrorists" type="string" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The refID of the node under which the Terrorists
+    					are spawned.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="spawnCounterterrorists" type="string"
+    			minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The refID of the node under which the
+    					Counterterrorists are spawned.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="bombPoint" type="string" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The refID of the node at which the Terrorists
+    					can place the bomb.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="root" type="tocs:node_t" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					The root node of the map.
+    				</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required">
+    		<annotation>
+    			<documentation>The map's name</documentation>
+    		</annotation>
+    	</attribute>
+    	<attribute name="version" type="string" use="required">
+    		<annotation>
+    			<documentation>The xml.xsd version, this file is implementing.</documentation>
+    		</annotation></attribute>
+    </complexType>
+    
+    <element name="map" type="tocs:map_t"></element>
+</schema>

@@ -1,0 +1,46 @@
+----------------------------------------------------------------------------------------------------
+Title			TOCS - Implementation Descisions
+Last Revised	2014/05/01
+Created			2014/05/01
+Summary			This document describes descisions regarding the implementations of modules in 
+				Text-Only Counter Strike [TOCS]. Using this document, it'll be easy to trace 
+				design descisions later.
+----------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------
+1 Instruction Parsing System's Relation to Connection
+----------------------------------------------------------------------------------------------------
+
+*	The problem is how the class Connection shall work together with the class InstructionParser
+	which is the front-end of the Instruction Parsing System [IPS].
+	I've take three possibilities into account:
+	(1)	Making InstructionParser a singleton. All Connections are using the same IPS. This leads to
+		minimum performance consumption for the server, but could make the processing of 
+		users instructions slower due to access collisions.
+		To avoid chaotic conditions in InstructionParser, it needs to be made thread-safe. But that
+		is only slightly more work.
+	(2) Creating a pool of InstructionParsers. This might be a tradeoff between best performance on
+		server-side and best performance on client-side. A downside is the considerably increased
+		time and complexity expense to create such a system.
+	(3) Every Connection has its own InstructionParser. The parser does not need to be written
+		thread-safe, and its kinda easy to implement this draft. On the other side, this could mean
+		a very (and maybe unnecessarly) high performance consumption on server-side.
+		
+	I've estimated that a user may wants an instruction to be performed about every 4 seconds (or
+	rather 6 seconds and more) and that the IPS might interprete an instruction in about 100 milli-
+	seconds. Given these estimations, the first design proposal would lead to reasonable small
+	latencies on client-side.
+	Therefore this singleton draft is chosen. I will desist from making experiments to prove these
+	estimations.
+	
+*	Addition: The first implementation of the IPS seems to need only 10 ms, which makes the first
+	draft an even better selection.
+		
+		
+		
+		
+		
+		
+		
+		

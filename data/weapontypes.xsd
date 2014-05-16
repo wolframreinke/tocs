@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="tocsdb.html" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tocs="tocsdb.html">
+
+    <complexType name="weaponstore_t">
+    	<sequence>
+    		<element name="weapon" type="tocs:weapon_t" minOccurs="1" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="weapon_t">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="category" type="string"></element>
+    		<element name="capacity" type="int"></element>
+    		<element name="rate" type="int"></element>
+    		<element name="damage" type="int"></element>
+    		<element name="price" type="int"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="store" type="tocs:weaponstore_t"></element>
+</schema>

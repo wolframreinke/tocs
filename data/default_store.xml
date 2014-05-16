@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<store xmlns="tocsdb.html">
+	<!-- Category: Pistols -->
+	<weapon>
+		<category>Pistol</category>
+		<name>Glock 18</name>
+		<capacity>20</capacity>
+		<rate>1</rate>
+		<damage>3</damage>
+		<price>800</price>
+	</weapon>
+	<weapon>
+		<category>Pistol</category>
+		<name>USP Tactical</name>
+		<capacity>12</capacity>
+		<rate>1</rate>
+		<damage>3</damage>
+		<price>500</price>
+	</weapon>
+	<weapon>
+		<category>Pistol</category>
+		<name>P228</name>
+		<capacity>13</capacity>
+		<rate>1</rate>
+		<damage>3</damage>
+		<price>600</price>
+	</weapon>
+	<weapon>
+		<category>Pistol</category>
+		<name>Desert Eagle .50 AE</name>
+		<capacity>7</capacity>
+		<rate>1</rate>
+		<damage>5</damage>
+		<price>650</price>
+	</weapon>
+	<weapon team="counter-terrorists">
+		<category>Pistol</category>
+		<name>FN Five-seveN</name>
+		<capacity>20</capacity>
+		<rate>1</rate>
+		<damage>3</damage>
+		<price>750</price>
+	</weapon>
+	<weapon team="terrorists">
+		<category>Pistol</category>
+		<name>Dual 96G Elite Berettas</name>
+		<capacity>30</capacity>
+		<rate>2</rate>
+		<damage>3</damage>
+		<price>1000</price>
+	</weapon>
+	
+	<!-- Category: Assault Rifles -->
+	<weapon>
+		<category>Assault Rifle</category>
+		<name>AK-47 (Kalaschnikow)</name>
+		<capacity>31</capacity>
+		<rate>3</rate>
+		<damage>5</damage>
+		<price>2500</price>
+	</weapon>
+</store>

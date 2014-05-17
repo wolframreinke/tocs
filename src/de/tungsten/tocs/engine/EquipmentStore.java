@@ -93,7 +93,7 @@ public class EquipmentStore implements ISubSystem {
 			NumericalSelector weaponMenu = new NumericalSelector( "Which " + current.name + " do you want to buy?" );
 			
 			for (WeaponType weapon : current.weapons) {
-				weaponMenu.addOption( weapon.getName() + "\t\t$" + weapon.getPrice(), weapon );
+				weaponMenu.addOption( weapon.getName() + " ($" + weapon.getPrice() + ")", weapon );
 			}
 			
 			categoryMenu.addOption( current.name, weaponMenu );
@@ -131,6 +131,7 @@ public class EquipmentStore implements ISubSystem {
 			
 				String 	category 	= item.getChildText( "category", ns);
 				String 	name		= item.getChildText( "name", ns );
+				String 	description = item.getChildText( "description", ns );
 				int		capacity	= Integer.parseInt( item.getChildText( "capacity", ns ) );
 				int		rate		= Integer.parseInt( item.getChildText( "rate", ns ) );
 				int 	damage		= Integer.parseInt( item.getChildText( "damage", ns ) );
@@ -151,7 +152,7 @@ public class EquipmentStore implements ISubSystem {
 				}
 				
 				// Waffe saven.
-				currentCategory.weapons.add( new WeaponType( name, capacity, rate, damage, price ) );
+				currentCategory.weapons.add( new WeaponType( name, description, capacity, rate, damage, price ) );
 			//}
 		}
 	}

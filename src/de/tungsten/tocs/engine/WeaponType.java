@@ -1,5 +1,7 @@
 package de.tungsten.tocs.engine;
 
+import de.tungsten.tocs.engine.nodes.WeaponNode;
+
 /**
  * Beinhaltet die Daten für ein Waffenmodell (z.B. Ak-47). Das umfasst den Namen
  * des Modells, die Magazin-Kapazität, die Feuerrate, den Schaden und den
@@ -22,6 +24,11 @@ public class WeaponType {
 	 * Der Name des Waffenmodells (z.B. "AK-47").
 	 */
 	private String name;
+	
+	/**
+	 * Die Beschreibung dieses Waffenmodells.
+	 */
+	private String description;
 	
 	/**
 	 * Die Kapazität eines Magazins für dieses Modell. Dabei wird ignoriert,
@@ -51,13 +58,14 @@ public class WeaponType {
 	/**
 	 * Erstellt eine neue Instanz von <code>WeaponType</code>.
 	 * 
-	 * @param name		{@link #name}
-	 * @param capacity	{@link #capacity}
-	 * @param rate		{@link #rate}
-	 * @param damage	{@link #damage}
-	 * @param price		{@link #price}
+	 * @param name			{@link #name}
+	 * @param description	{@link #description}
+	 * @param capacity		{@link #capacity}
+	 * @param rate			{@link #rate}
+	 * @param damage		{@link #damage}
+	 * @param price			{@link #price}
 	 */
-	public WeaponType(String name, int capacity, int rate, int damage, int price) {
+	public WeaponType( String name, String description, int capacity, int rate, int damage, int price ) {
 		super();
 		this.name = name;
 		this.capacity = capacity;
@@ -73,6 +81,16 @@ public class WeaponType {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * Gibt die {@link #description Beschreibung} des Waffenmodells
+	 * zurück.
+	 * 
+	 * @return	Die Beschreibung des Waffenmodells.
+	 */
+	public String getDescription() {
+		return description;
 	}
 	
 	/**
@@ -110,5 +128,9 @@ public class WeaponType {
 	 */
 	public int getPrice() {
 		return price;
+	}
+	
+	public WeaponNode newInstance() {
+		return new WeaponNode( new String[] { name }, description, this );
 	}
 }

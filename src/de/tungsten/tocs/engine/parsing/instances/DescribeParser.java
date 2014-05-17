@@ -56,8 +56,8 @@ public class DescribeParser extends InstructionParser implements IParser {
 					connection.write( description );
 				} else {
 					
-					if ( !location.getSubject().equals( "" ) )
-						connection.write( "What do you mean by \"" + location.getSubject() + "\"?" );
+					if ( !location.getTarget().equals( "" ) )
+						connection.write( "What do you mean by \"" + location.getTarget() + "\"?" );
 				}
 			}
 		}

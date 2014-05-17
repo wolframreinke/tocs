@@ -36,7 +36,7 @@ public class TakeParser extends InstructionParser implements IParser {
 				
 			} else {
 				
-				connection.write( "There is no \"" + location.getSubject() + "\" around here." );
+				connection.write( "There is no \"" + location.getTarget() + "\" around here." );
 			}
 		}
 	}

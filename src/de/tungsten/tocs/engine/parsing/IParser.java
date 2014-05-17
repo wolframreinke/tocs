@@ -3,11 +3,10 @@ package de.tungsten.tocs.engine.parsing;
 import de.tungsten.tocs.net.IPlayerConnection;
 
 /**
- * <code>IParser</code> is the interface that all classes which are able to process
- * a player's input in form of a string have in common. The Instruction Parsing
- * System first a suitable parser to process the input by using the
- * {@link #getKeywords()} method. Afterwards, the chosen parser's 
- * {@link #parse(String, IPlayerConnection)} method is called to interprete the input.
+ * Ein <code>IParser</code> parst den Befehl eines Spielers und führt ihn aus. Dabei gibt
+ * es für jeden Befehl eine eigene Implementation von <code>IParser</code>. Um die
+ * Unterstützung neuer Befehle hinzuzufügen, muss so lediglich eine neue Implementation
+ * erstellt werden.
  * 
  * @author Wolfram
  *
@@ -15,29 +14,28 @@ import de.tungsten.tocs.net.IPlayerConnection;
 public interface IParser {
 	
 	/**
-	 * Returns a array of strings which identify this parser. The Instruction Parsing
-	 * System chooses which parser is used to process the player's input using these
-	 * keywords. more than one implementation provides the same keyword, the one which
-	 * matched first will be chosen.
-	 * <p>
-	 * <b>Example:</b><br>
-	 * A parser for modifying <code>OpenableNodes</code> may return the keywords
-	 * "open" and "close". When the player enters an instruction starting with one of
-	 * these keywords, this parser is chosen for interpreting the input.
+	 * Gibt die Schlüsselwörter dieses Parsers zurück. Die Schlüsselwörter werden verwendet,
+	 * um festzustellen, ob dieser Parser die Eingabe des Spielers verarbeiten kann.
+	 * <br><b>Beispiel:</b>
+	 * Eine Implementation von <code>IParser</code> soll Befehle parsen können, die etwas
+	 * mit dem Werfen von Gegenständen zu tun haben. Als Schlüsselwörter könnten hier 
+	 * "werfen", "schleudern", "schmeißen", etc verwendet werden. Wenn entschieden werden
+	 * soll, ob die Eingabe des Spielers an diesen Parser übergeben werden soll, wird 
+	 * die Eingabe mit diesen Schlüsselwörtern verglichen, sodass 
+	 * "wirf den Ball" an diesen Parser weitergereicht wird,
+	 * "iss ein Sandwich" allerdings nicht.
 	 * 
-	 * @return	The keywords which identify this parser.
+	 * @return Die Schlüsselwörter dieses Parsers.
 	 */
 	public abstract String[] getKeywords();
 	
-	
 	/**
-	 * Interpretes a player's input and performs the corresponding actions. The
-	 * parameter <code>connection</code> contains a <code>Player</code> object. This
-	 * parser will asusme that this player issued the command.
+	 * Interpretiert die gegebene Eingabe des Spielers als Befehl, und führt ihn dann
+	 * unter Benutzung der gegebenen <code>IPlayerConnection</code> aus.
 	 * 
-	 * @param input			The textual input which has to be interpreted.
-	 * @param connection	The connection (and therefore player) on which the parsed
-	 * 						action is performed.
+	 * @param input			Die zu interpretierende Eingabe.
+	 * @param connection	Die <code>IPlayerConnection</code> die genutzt wird, um
+	 * 						den Befehl auszuführen.
 	 */
 	public abstract void parse( String input, IPlayerConnection connection );
 }

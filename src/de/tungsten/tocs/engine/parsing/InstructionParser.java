@@ -7,61 +7,92 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+/**
+ * Erstellt ein {@link Instruction}-Objekt aus der Eingabe eines Spielers. Für Details,
+ * siehe {@link #createInstruction(String)}.
+ * 
+ * @author Wolfram
+ *
+ */
 public abstract class InstructionParser {
 
+	/**
+	 * Die "kleinen Wörter", die beim parsen ignoriert werden, da sie zur Identifikation
+	 * von Knoten irrelevant sind.
+	 */
 	private static final String[] ARTICLES = new String[] 
 			{ "the", "this", "my", "these", "those", "a", "an", "some", "one" };
 	
+	/**
+	 * Erstellt eine {@link Instruction}-Objekt aus der gegebenen Eingabe eines
+	 * Spielers. Dabei werden "kleine Wörter" (siehe {@link #ARTICLES}) ignoriert. So
+	 * wird aus "open the box" eine Instruktion mit dem Präfix "box" (ohne "the"). 
+	 * <p>
+	 * Identifier werden nach "and"s getrennt, sodass aus "the big box and the small box"
+	 * nicht "big", "box", "small", "box" wird, sondern "big box" und "small box".
+	 * <p>
+	 * Generell ist der Parser relativ robust implementiert, in der englischen Sprache gern
+	 * verwendete Zeichen und Füllwörter werden entweder ersetzt oder ignoriert.
+	 * 
+	 * @param input	Die zu interpretierende Eingabe.
+	 * @return		Die aus der Eingabe geparste Instruction.
+	 */
 	protected Instruction createInstruction( String input ) {
-	
-		// This word delimits the identifiers. In "A B C and D E", only "A B C" and
-		// "D E" are identifiers.
+
+		// Dieses Wort trennt Identifier. Aus "A B C and D E" werden die Identifier
+		// "A B C" und "D E".
 		final String DELIMITER = "and";
-		
-		// These variables are eventually used to create the Instruction object.
+
+		// Mit diesen Variablen wird letztlich die Instruction erstellt.
 		String verb = null;
 		Set<NodeLocation> prefix = new HashSet<NodeLocation>();
 		EnumMap<Preposition, Set<NodeLocation>> arguments = new EnumMap<Preposition, Set<NodeLocation>>(Preposition.class);
 		arguments.put( Preposition.TO, new HashSet<NodeLocation>() );
 		arguments.put( Preposition.WITH, new HashSet<NodeLocation>() );
-		
-		// Perform some default replacements. This makes it far easier afterwards.
+
+		// Einige Standard-Ersetzungen, um den Parser robuster zu machen
 		input = input.replace( ",", " " + DELIMITER + " " );
 		input = input.replace( "as well as", DELIMITER );
 		input = input.replace( ";", "" );
 		input = input.replace( ".", "" );
 		input = input.replace( "!", "" );
 		input = input.trim();
-		
-		// Split the input into words
+
+		// In Wörter aufsplitten
 		String[] words = input.split("\\s+");
 		
-		// Indicates whether the currently recognized word is part of an
-		// InstructionArgument. If not, it belongs to the prefix part.
+		// Gibt an, ob das momentan betrachtete Wort teil eines Arguments der Instruction
+		// ist. Wenn nicht gehört es nämlich zum Präfix-Part
 		boolean prepositionMode = false;
-		
-		// Indicates whether the verb was already recognized (false) or not
-		// (true).
-		boolean verbMode = true;
-		
-		// Set is chosen as the collection of objects has no specific order
+
+		// Gibt an, ob das Verb bereits gespeichert wurde
+		boolean verbRecognized = true;
+
+		// Die zuletzt gefundenen Identifier in einer Menge, da ihre Reihenfolge irrelevant
+		// ist
 		Set<String> lastObjects = new HashSet<String>();
-		// A Location is a collection which has a specific order, but its
-		// elements do not needd to have an order.
+		// Die zuletzt gefundenen Locations. Mehrere Identifier bilden zusammen eine
+		// Location, die dann mit "of" o.ä. verknpft sind. Beispiel:
+		// the ball and the knife on the table
+		// ball und knife sind zusammen eine Location, die nächste ist dann table
 		List<Set<String>> lastLocation = new ArrayList<Set<String>>();
+		
+		// Der zuletzt gefundenen Identifier
 		String lastIdentifier = "";
+		
+		// Die zuletzt gefundene Präposition
 		Preposition lastPreposition = null;
 		
 		for (String word : words) {
-			
-			// The is the very first word of an instruction
-			if ( verbMode ) {
+
+			// Das Verb ist das erste Wort der Eingabe
+			if ( verbRecognized ) {
 				verb = word;
-				verbMode = false;
+				verbRecognized = false;
 				continue;
 			}
-			
-			// "small" words, such like articles are skipped
+
+			// "kleine Worter" werden ignoriert.
 			boolean isSmallWord = false;
 			for (String article : ARTICLES) {
 				if ( article.equalsIgnoreCase( word ) ) {
@@ -71,44 +102,47 @@ public abstract class InstructionParser {
 			}
 			
 			if ( !isSmallWord ) {
-				
-				// If the current word is a preposition, its stored. If not,
-				// fromString will return null
+
+				// Wenn das aktuelle Wort eine Präposition ist wird es gespeichert.
+				// Wenn nicht gibt fromString null zurück
 				Preposition currentPreposition = Preposition.fromString( word );
 			
 				if ( word.equalsIgnoreCase( DELIMITER ) ) {
-					
-					// The current word is DELIMITER, therefore, a new 
-					// identifier starts.
+
+					// Wenn das aktuelle Wort der DELIMITER ist, dann waren die
+					// bisherigen Wörter Teil eines neue Identifier.
+					// Dieser wird geaddet.
 					lastObjects.add( lastIdentifier );
 					lastIdentifier = "";
 					
 				} else if ( currentPreposition == null ) {
-					
-					// The current word is no preposition, but an object. Its added to the current
-					// set of objects.
+
+					// Wenn das aktuelle Wort keine Präposition ist, dann wird es 
+					// zum aktuellen Identifier hinzugefügt.
 					lastIdentifier += " " + word;
 					
 				} else if ( currentPreposition == Preposition.OF ) {
-					
-					// The current word is a preposition of the type OF. Therefore, the current set
-					// of objects is added as a new identifier in the current location.
+
+					// Das aktuelle Wort ist eine Präposition des Types OF. Daher wird
+					// der aktuelle Identifier zur aktuellen Location hinzugefügt, und
+					// diese Location zur Liste der Locations geaddet.
 					lastObjects.add( lastIdentifier );
 					lastLocation.add( lastObjects );
 					lastObjects = new HashSet<String>();
 					lastIdentifier = "";
 					
 				} else {
-					
-					// The current word is a preposition different from OF. The current set of objects
-					// is added to the current location.
+
+					// Das aktuelle Wort ist eine Präosition, die nicht von Typ OF ist.
+					// Erstmal den letzten Identifier und die letzte Location speichern.
 					lastObjects.add( lastIdentifier );
 					lastLocation.add( lastObjects );
 					
 					if ( prepositionMode ) {
-						
-						// Its not the first preposition, so the location is transformed into a set of
-						// NodeLocations and saved as an instruction argument.
+
+						// Wenn das nicht die erste Präposition ist, dann müssen die
+						// aktuellen Locations zu einem InstructionArgument geaddet
+						// werden.
 						Set<NodeLocation> nodeLocations = createNodeLocations( lastLocation );
 						if ( arguments.get( currentPreposition) != null )
 							arguments.get( currentPreposition ).addAll( nodeLocations );
@@ -120,15 +154,15 @@ public abstract class InstructionParser {
 						
 					} else {
 						
-						// Its the first preposition, so the location is transformed into a set of
-						// NodeLocations and assigned to be the prefix of this instruction.
+						// Wenn es die erste Präposition ist, dann müssen die aktuelle
+						// Locataions zum Präfix geaddet werden.
 						prepositionMode = true;
 						prefix = createNodeLocations( lastLocation );
 						lastPreposition = currentPreposition;
 
 					}
-					
-					// Clear both
+
+					// Alle Variablen clearen
 					lastIdentifier = "";
 					lastObjects = new HashSet<String>();
 					lastLocation = new ArrayList<Set<String>>();
@@ -136,11 +170,13 @@ public abstract class InstructionParser {
 				}
 			} 
 		}
-		
-		// When quitting the loop, the lastObjects array will still contain elements which must
-		// be added to the prefix/arguments
+
+		// Wenn die Schleife verlassen wird, wurden die letzten Wörter noch nicht zur
+		// aktuellen Location geaddet.
 		lastObjects.add( lastIdentifier );
 		lastLocation.add( lastObjects );
+		
+		// Aus den einzelnen Identifiers muss nun noch eine NodeLocation gemacht werden.
 		Set<NodeLocation> nodeLocations = createNodeLocations( lastLocation );
 		if ( prepositionMode ) {
 			if ( arguments.get( lastPreposition ) != null )
@@ -149,15 +185,31 @@ public abstract class InstructionParser {
 				arguments.put( lastPreposition, nodeLocations );
 		} else
 			prefix = nodeLocations;
-		
-		// Create the Instruction object and return it
+
+		// Instruction-Objet erstellen und zurückgeben.
 		Instruction result = new Instruction(verb, prefix, arguments);
 		return result;
 	}
 	
+	/**
+	 * Erstellt eine Menge von <code>NodeLocation</code>s aus dem Übergabeparameter.
+	 * Dieser ist eine Liste von Mengen von Identifiers. Beispiel:
+	 * <br><code>{ {knife,stone} {box,chest} }</code><br>
+	 * Die Rückgabe sollen die <code>NodeLocation</code>s von jedem Element der ersten
+	 * Menge zu jedem Element der letzten Menge über jeden möglichen Pfad (also
+	 * quasi das kartesische Produkt aller gegebenen Mengen). Beispiel:
+	 * <br>Aus <code>{ {a1,a2} {b1,b2} {c1,c2} }</code> werden die 
+	 * <code>NodeLocation</code>s <code>{ a1->b1->c1, a1->b1->c2, a1->b2->c1, 
+	 * a1->b2->c2, ..., a2->b2->c2 }
+	 * </code><br>
+	 * 
+	 * @param locations	siehe oben.
+	 * @return			siehe oben.
+	 */
 	private Set<NodeLocation> createNodeLocations( List<Set<String>> locations ) {
-		
-		// the order of the sets in the parameter must be reversed first
+
+		// Die Reihenfolge der Sets muss erst getauscht werden. Dafür wird ein Stack
+		// verwendet.
 		Stack<Set<String>> reverseStack = new Stack<Set<String>>();
 		for (Set<String> set : locations) 
 			reverseStack.push( set );
@@ -165,18 +217,18 @@ public abstract class InstructionParser {
 		locations.clear();
 		while ( !reverseStack.isEmpty() )
 			locations.add( reverseStack.pop() );
-		
-		// This set will be returned at the end of this method.
+
+		// Der Rückgabewert
 		Set<NodeLocation> nodeLocations = new HashSet<NodeLocation>();
 		
-		// For this algorithm a Stack containing sets of lists is required, but
-		// the input is a list of sets, so it needs to be transformed.
+		// Für diesen Algorithmus wird ein Stack benötigt, der Sets von Listen enthält,
+		// die Eingabe ist aber eine Liste von Sets, daher muss erst transformiert werden.
 		Stack<Set<List<String>>> stack = new Stack<Set<List<String>>>();
 		for (Set<String> set : locations) {
-			
-			// Create a set of a list of Strings from a set of strings. A 
-			// list is created for each String element, which contains only
-			// this string element.
+
+			// Erst ein Set von Listen von Strings aus dem Set von Strings erstellen.
+			// Dazu wird für jeden String ein eigenes Set erstellt, dass nur diesen
+			// String enthält
 			Set<List<String>> element = new HashSet<List<String>>();
 			for (String current : set) {
 				List<String> list = new ArrayList<String>();
@@ -184,23 +236,24 @@ public abstract class InstructionParser {
 				
 				element.add( list );
 			}
-			
-			// push this new set.
+
+			// Das transformierte Ergebnis kann nun auf den Stack
 			stack.push( element );
 		}
 
 		while ( stack.size() > 1 ) {
-			
-			// pop two set of lists. The cartesian product will be computed
-			// using these sets.
+
+			// Zwei Elemente vom Stack poppen. Aus diesen beiden Mengen wird
+			// das kartesische Produkt berechnet werden.
 			Set<List<String>> set01 = stack.pop(),
 							  set02 = stack.pop();
-			
-			// The result of the cartesian product will be written into this
-			// set
+
+			// Das Ergebnis des kartesischen Produkts wird in diese Menge geschrieben
+			// werden.
 			Set<List<String>> result = new HashSet<List<String>>();
-			
-			// compute the cartesian product.
+
+			// Kartesisches Produkt (also die Kombination von jedem Element der ersten
+			// Menge mit jedem Element der zweiten Menge) berechnen.
 			for (List<String> element02 : set02) {
 				for (List<String> element01 : set01) {
 
@@ -212,11 +265,11 @@ public abstract class InstructionParser {
 				}
 			}
 			
-			// push the result
+			// Das Ergebnis wieder auf den Stack pushen
 			stack.push( result );	
 		} 
-		
-		// The last remaining element on the stack is the result element.
+
+		// Das letzte auf dem Stack befindliche Element ist das Ergebnis.
 		for (List<String> list : stack.pop()) {
 			nodeLocations.add( new NodeLocation( list ) );
 		}

@@ -7,10 +7,11 @@ import de.tungsten.tocs.engine.nodes.Node;
 import de.tungsten.tocs.engine.nodes.Player;
 
 /**
- * A <code>NodeLocator</code> provides a simple interface to the <code>Node</code>
- * tree. Instead of using the <code>Node</code>'s methods like 
- * <code>Node.find(...)</code>, the user can use the methods of this class, which
- * provide more specialized functionalities.
+ * Die abstrakte Klasse <code>NodeLocator</code> bietet statische Methoden zum Suchen
+ * nach Knoten im Knoten-Baum. Die Klassen {@link Node} selbst bietet zwar die Methoden
+ * <code>find</code> und <code>findByIdentifier</code> aber um das Parsen der 
+ * Spielereingaben einfach, und <code>Node</code> möglichst allgemein zu halten, können
+ * die hier definierten Methode verwendet werden.
  * 
  * @author Wolfram
  *
@@ -18,25 +19,28 @@ import de.tungsten.tocs.engine.nodes.Player;
 public abstract class NodeLocator {
 	
 	/**
-	 * Finds a <code>Node</code> with the given name which is a child node of the given
-	 * parent <code>Node</code>.
+	 * Sucht nach Knoten mit dem gegebenen Namen, die Kind-Knoten des gegebenen
+	 * Parent-Knoten sind. Der erste gefundene Knoten wird zurückgegeben.
 	 * <p>
-	 * <code>Node</code>'s whose identifier matches are preferred to <code>Node</code>'s
-	 * which names match.
+	 * Knoten deren Identifier dem gegebenen Namen entsprechen werden gegenüber Knoten,
+	 * deren Namen mit dem gegebenen Namen übereinstimmen bevorzugt. Wenn keine
+	 * Knoten der Suchbedingung entsprechen, wird <code>null</code> zurückgegeben.
 	 * <p>
-	 * If more than one <code>Node</code> matches the name, the first one is returned,
-	 * if no <code>Node</code> matches, <code>null</code> is returned.
+	 * Da die Suche die Methoden von <code>Node</code> verwendet, ist auch diese
+	 * Methode eine Tiefen-Suche (Deep-First). Es wird also nicht der Knoten 
+	 * zurückgegeben, der am nöchsten zum gegebenen Parent-Knoten ist, sondern der,
+	 * der sich in seinen Teilbäumen am weitesten links befindet.
 	 * 
-	 * @param name			The identifier/name of the desired <code>Node</code>.
-	 * @param parent		The parent <code>Node</code> whose child the desired 
-	 * 						<code>Node</code> is.
-	 * @param depth			The search depth.
-	 * @return				A <code>Node</code> with the given identifier or name,
-	 * 						which is located at the given parent <code>Node</code>.
+	 * @param name			Der Identifier/Name des gesuchten Knotens.
+	 * @param parent		Der Parent-Knoten, dessen Kind der gesuchte Knoten ist.
+	 * @param depth			Die Suchtiefe. Negative Werte stehen für eine unbegrenzte
+	 * 						Suchtiefe.
+	 * @return				Ein Knoten mit dem gegebenen Namen oder Identifier, der ein
+	 * 						Kind-Knoten des gegebenen Parent-Knotens ist.
 	 */
 	public static Node findSubNode( final String name, Node parent, int depth ) {
-		
-		// Anonymous class for name comparison in Node.find(...)
+
+		// Anonyme Klasse für find(...) in Node
 		INodePredicate nameComparison = new INodePredicate() {
 			
 			@Override
@@ -52,16 +56,16 @@ public abstract class NodeLocator {
 		};
 		
 		Node result = null;
-		// Look for matching identifier first
+		// Zuerst nach passenden Identifiers suchen
 		result = parent.findByIdentifier( name, depth );
 		
 		if ( result == null ) {
-			// Now look for names by using the anonymous class
+			// Wenn keine passenden Identifier, dann nach passenden Namen suchen.
 			List<Node> candidates = parent.find( nameComparison, depth );
-			
-			// candidates shouldn't be null, but better safe than sorry.
+
+			// candidates kann eigentlich nicht null sein, aber sicher ist sicher.
 			if ( candidates != null && candidates.size() > 0 )
-				result = candidates.get( 0 );
+				result = candidates.get( 0 ); // Ersten Treffer zurückgeben
 			
 		}
 		
@@ -69,33 +73,30 @@ public abstract class NodeLocator {
 	}
 	
 	/**
-	 * Finds a <code>Node</code> in the environment of a player by name. To be found
-	 * by this method, the desired <code>Node</code> bust me located...
+	 * Sucht nach <code>Node</code>s in der Umgebung eines Spielers. Um von dieser
+	 * Methode gefunden zu werden, muss ein Knoten sich in einem der folgenden Orte
+	 * befinden:
 	 * <ul>
-	 * <li>... in the same room as the player, or
-	 * <li>... somewhere in the inventory located at the player, or
-	 * <li>... in the hands located at the player.
+	 * <li> Im selben Raum wie der gegebenen Spieler (Suchtiefe 1),
+	 * <li> Irgendwo (unbegrenzte Suchtiefe) im Inventar des Spielers, oder
+	 * <li> in den Händen des Spielers.
 	 * </ul>
-	 * <p>
-	 * If both, a <code>Node</code>'s identifier and another <code>Node</code>'s
-	 * name match, the <code>Node</code>, whose identifier matches is preferred.
-	 * <p>
-	 * If more than one <code>Node</code> matches, the first match is returned. If no
-	 * <code>Node</code> matches, <code>null</code> is returned.
-	 * 
-	 * @param name		The identifier or name of the desired <code>Node</code>.
-	 * @param player	The player at which the desired <code>Node</code> is located.
-	 * @return			A <code>Node</code> with the given identifier, or if there is
-	 * 					no such <code>Node</code>, the <code>Node</code> with the given
-	 * 					name, which is located at the given player. If no
-	 * 					<code>Node</code> matches, <code>null</code> is returned.
+	 * Knoten, deren Identifier passen werden gegenüber Knoten deren Namen passen
+	 * bevorzugt. Wenn mehr als ein Knoten passt, wird der erste Treffer zurückgegeben.
+	 * Wenn kein Knoten passt, wird <code>null</code> zurückgegeben.
+	 *
+	 * @param name		Der Name/Identifier des gesuchten Knotens.
+	 * @param player	Der Spieler, in dessen Umgebung der gesuchte Knoten gesucht wird.
+	 * @return			Ein Knoten mit dem gegebenen Namen/Identifier, der in der 
+	 * 					Umgebung des gegebenen Spielers gefunden wurde, oder
+	 * 					<code>null</code> wenn kein solcher Knoten gefunden wurde.
 	 */
 	public static Node findNodeAtPlayer( String name, Player player ) {
-		
-		// Look at the players inventory and hands with infinite search depth
+
+		// In Inventar und Händen mit unbegrenzter Suchtiefe Suchen.
 		Node result = findSubNode( name, player, -1 );
-		
-		// Look at the room, the player is located in
+
+		// Mit Suchtiefe 1 den Raum des Spielers durchsuchen.
 		if ( result == null )
 			result = findSubNode( name, player.getParent(), 1 );
 		
@@ -103,55 +104,54 @@ public abstract class NodeLocator {
 	}
 	
 	/**
-	 * Finds a <code>Node</code> in the environment of a player by a collection of locators.
-	 * Generally this methods is able to find the same <code>Nodes</code> as 
-	 * {@link #findNodeAtPlayer(String, Player)}. 
+	 * Sucht nach <code>Node</code>s in der Umgebung eines Spielers anhand einer
+	 * {@link NodeLocation}. 
 	 * <p>
-	 * The first given locator is the root. This method will search for it using
-	 * <code>findNodeAtPlayer(...)</code>. All following locators are then located in the
-	 * context of the previosly located node.
+	 * Der erste String in der <code>NodeLocation</code> ist die Wurzel, dieser Knoten wird
+	 * direkt beim Spieler gesucht. Alle folgenden Knoten werden in der Umgebung des
+	 * zuletzt lokalisierten Knotens gesucht.
 	 * <br><b>Example:</b><br>
-	 * <code>{ "n1", "n2", "n3", "n4" }</code>; <code>n1</code> is located first at the
-	 * given player. Afterwards <code>n2</code> is located at <code>n1</code>, then
-	 * <code>n3</code> is located at <code>n2</code> and so forth. 
+	 * <code>l1 -> l2 -> l3 -> l4</code><br>
+	 * "l1" wird direkt beim Spieler gesucht. Nachdem dieser Knoten lokalisiert wurde,
+	 * wird "l2" in der Umgebung des mit "l1" lokalisierten Knotens gesucht. "l3" wird
+	 * dann in der Umgebung des mit "l2" gefundenen Knotens gesucht.
 	 * <p>
-	 * <code>Node</code>'s whose identifiers match the current locator are preferred to
-	 * <code>Node</code>'s whose names match.
-	 * <p>
-	 * If more than one <code>Node</code> match the current locator, the first one is
-	 * chosen. If no <code>Node</code> matches the current locator, the search is cancelled
-	 * and <code>null</code> is returned.
+	 * Knoten deren Identifier passen werden gegenüber Knoten, deren Namen passen
+	 * bevorzugt. Wenn mehr als ein Knoten gefunden wurde, der auf die
+	 * <code>NodeLocation</code> passt, wird der erste Treffer zurückgegeben. Wenn kein
+	 * passender Knoten gefunden wurde, wird <code>null</code> zurückgegeben.
 	 * 
-	 * @param locators		An <code>Iterable&lt;String&gt;</code> which is used to
-	 * 						locate the desired <code>Node</code>.
-	 * @param player		The player at which the first <code>Node</code> in
-	 * 						<code>locators</code> is located.
-	 * @return				A <code>Node</code> which identifier or name matches the
-	 * 						last <code>locator</code>, which is located at the "path"
-	 * 						that is specified by the <code>locators</code>.
+	 * @param locators		Die <code>NodeLocation</code>, die zur Suche verwendet werden
+	 * 						soll.
+	 * @param player		Der Spieler, bei dem der erste Knoten lokalisiert werden soll.
+	 * @return				Ein Knoten, der sich an der gegebenen <code>NodeLocation</code>
+	 * 						befindet, oder <code>null</code>, wenn kein solcher Knoten
+	 * 						gefunden wurde.
 	 */
 	public static Node findNodeUsingLocators( NodeLocation locators, Player player ) {
 
-		// This boolean is set to false after the first iteration. The currentNode
-		// is initlially found by findNodeAtPlayer(...).
+		// Dieser boolean wird nach der ersten iteration auf false gesetzt, da nur
+		// der erste Knoten beim Spieler gesucht wird.
 		boolean lookAtPlayer = true;
 		Node currentNode = null;
 		
+		// NodeLocation implementiert Iteratble
 		for (String locator : locators) {
-			
-			// If first iteration
+
+			// Nur bei erster iteration
 			if ( lookAtPlayer ) {
-				
-				// find root node.
+
+				// Wurzel finden
 				lookAtPlayer = false;
 				currentNode = findNodeAtPlayer( locator, player );
 			} else {
-					
-				// find next node in the locator chain
+
+				// Nächsten Knoten im Suchpfad finden.
 				currentNode = findSubNode( locator, currentNode, 1 );	
 			}
-			
-			// if one of the chain elements was not found, return null
+
+			// Wenn ein Element nicht gefunden wurde, wird die Suche gecancelled und
+			// null zurückgegeben.
 			if ( currentNode == null )
 					return null;
 		}

@@ -35,7 +35,7 @@ public class PutParser extends InstructionParser implements IParser {
 				
 				to = NodeLocator.findNodeUsingLocators( location, player );
 				if ( to == null ) 
-					connection.write( "I cannot see any \"" + location.getSubject() + "\" around here." );
+					connection.write( "I cannot see any \"" + location.getTarget() + "\" around here." );
 				
 			}
 		}
@@ -50,7 +50,7 @@ public class PutParser extends InstructionParser implements IParser {
 					object.move( to );
 					connection.write( "Done." );
 				} else {
-					connection.write( "I cannot find this \"" + location.getSubject() + "\". " );
+					connection.write( "I cannot find this \"" + location.getTarget() + "\". " );
 				}
 			}
 		}

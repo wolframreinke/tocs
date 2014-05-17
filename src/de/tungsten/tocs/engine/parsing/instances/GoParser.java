@@ -34,7 +34,7 @@ public class GoParser extends InstructionParser implements IParser {
 		// "go north and west", he will go north first and west afterwards.
 		for (NodeLocation location : instruction.getPrefix()) {
 			
-			DoorDirection direction = DoorDirection.fromString( location.getSubject() );
+			DoorDirection direction = DoorDirection.fromString( location.getTarget() );
 			if ( direction != null ) {
 				
 				Room nextRoom = room.getAdjacentRoom( direction );
@@ -47,7 +47,7 @@ public class GoParser extends InstructionParser implements IParser {
 				}
 				
 			} else {
-				connection.write( "What do you mean by \"" + location.getSubject() + "\"?" );
+				connection.write( "What do you mean by \"" + location.getTarget() + "\"?" );
 			}
 		
 		}	
@@ -61,13 +61,13 @@ public class GoParser extends InstructionParser implements IParser {
 				// Look for the node in the current room's adjacent rooms.
 				for (Room adjacentRoom : room.getAdjacentRooms()) {
 
-					if ( adjacentRoom.getIdentifier().equals( location.getSubject() ) ) {
+					if ( adjacentRoom.getIdentifier().equals( location.getTarget() ) ) {
 						
 						room = adjacentRoom;
 					} else {
 						
 						for (String name : adjacentRoom.getNames()) {
-							if ( name.equals( location.getSubject() ) )
+							if ( name.equals( location.getTarget() ) )
 								room = adjacentRoom;
 						}
 					}

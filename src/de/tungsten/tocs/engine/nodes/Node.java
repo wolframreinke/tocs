@@ -319,7 +319,10 @@ public class Node {
 	 * 					können sie auch <code>null</code> zurückgeben.
 	 */
 	public Node addChild( Node child) {
-		child.move( this );
+		if ( child != null ) {
+			child.parent = this;
+			children.add( child );
+		}
 		
 		return this;
 	}

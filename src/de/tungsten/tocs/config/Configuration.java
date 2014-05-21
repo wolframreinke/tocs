@@ -39,6 +39,8 @@ import de.tungsten.tocs.Logger;
  */
 public class Configuration {
 	
+	public static final String LOG_NAME	= "(CORE) Configuration";
+	
 	/**
 	 * Die Eintrage aus der Konfigurations-Datei. Diese Map wird beim Aufruf
 	 * von {@link #loadFromFile(String)} gefüllt und sonst nicht verändert.
@@ -110,7 +112,7 @@ public class Configuration {
 		else if ( !checkType( value, type ) ) {
 			
 			// Semantischer Fehler: Typen stimmen nicht überein.
-			Logger.getInstance().log( LogLevel.WARNING, "Configuration: Semantic error in configuration file: \"" + key + "\" must have the type " + type + ".");
+			Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "Semantic error in configuration file: \"" + key + "\" must have the type " + type + ".");
 			return defaultValue;
 		}
 		else	 
@@ -163,7 +165,7 @@ public class Configuration {
 		File configFile = new File( configFilePath );
 		try {
 			
-			Logger.getInstance().log( LogLevel.INFO, "Configuration: Loading configuration file \"" + configFilePath + "\"." );	
+			Logger.getInstance().log( LogLevel.INFO, LOG_NAME, "Loading configuration file \"" + configFilePath + "\"." );	
 			Scanner fileScanner;
 
 			fileScanner = new Scanner( configFile );
@@ -173,7 +175,7 @@ public class Configuration {
 			while ( fileScanner.hasNextLine() ) {
 				
 				String configLine = fileScanner.nextLine();
-				Logger.getInstance().log( LogLevel.DEBUG, "Configuration: Read configuration entry: \"" + configLine.replace( "\t", "") + "\"." );
+				Logger.getInstance().log( LogLevel.DEBUG, LOG_NAME, "Read configuration entry: \"" + configLine.replace( "\t", "") + "\"." );
 				
 				String[] tokens = configLine.split( "=" );
 				
@@ -181,7 +183,7 @@ public class Configuration {
 				
 					values.put( tokens[0].trim() , tokens[1].trim() );
 					
-				} else Logger.getInstance().log( LogLevel.WARNING, "Configuration: Syntax error in configuration file at line " + line + "." );
+				} else Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "Syntax error in configuration file at line " + line + "." );
 			
 				line++;
 			}
@@ -190,7 +192,7 @@ public class Configuration {
 		} 
 		catch ( FileNotFoundException e ) {
 			
-			Logger.getInstance().log( LogLevel.WARNING, "Configuration: No configuration file at " + configFilePath + ".");
+			Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "No configuration file at " + configFilePath + ".");
 		}
 		
 	}

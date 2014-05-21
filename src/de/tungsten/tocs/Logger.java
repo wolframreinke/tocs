@@ -101,20 +101,23 @@ public class Logger {
 	 * {@link #setOutputStream(OutputStream)} festgelegten Stream, wenn
 	 * das gegebene Log-Level (<code>level</code>) kleiner oder
 	 * gleich dem mit {@link #setLogLevel(LogLevel)} festgelegten Log-Level
-	 * des Loggers ist.
+	 * des Loggers ist. Als Sender der Nachricht wird die mit 
+	 * <code>clientName</code> gegebenene Zeichenkette verwendet.
 	 * <p>
 	 * Die Nachricht wird in folgendem Format in den Stream geschrieben:
 	 * <br>
 	 * <code>
-	 * '[' $LogLevel '] ' $Date ' - ' $message
+	 * '[' $LogLevel '] ' $Date ' - ' $clientName ': ' $message
 	 * </code>
 	 * 
-	 * @param level		Das Log-Level als integer. Es wird erst in ein
-	 * 					{@link LogLevel} umgewandelt weiterverwendet.
-	 * @param message	Die zu schreibende Nachricht.
+	 * @param level			Das Log-Level als integer. Es wird erst in ein
+	 * 						{@link LogLevel} umgewandelt weiterverwendet.
+	 * @param clientName	Die Zeichenkette, die als Sender der Log-Nachricht
+	 * 						angezeigt wird.
+	 * @param message		Die zu schreibende Nachricht.
 	 */
-	public synchronized void log( int level, String message ) {
-		log( LogLevel.fromLevel( level ), message );
+	public synchronized void log( int level, String clientName, String message ) {
+		log( LogLevel.fromLevel( level ), clientName, message );
 	}
 	
 	/**
@@ -122,18 +125,21 @@ public class Logger {
 	 * {@link #setOutputStream(OutputStream)} festgelegten Stream, wenn
 	 * das gegebene Log-Level (<code>level</code>) kleiner oder
 	 * gleich dem mit {@link #setLogLevel(LogLevel)} festgelegten Log-Level
-	 * des Loggers ist.
+	 * des Loggers ist. Als Sender der Nachricht wird die mit
+	 * <code>clientName</code> übergebene Zeichenkette verwendet.
 	 * <p>
 	 * Die Nachricht wird in folgendem Format in den Stream geschrieben:
 	 * <br>
 	 * <code>
-	 * '[' $LogLevel '] ' $Date ' - ' $message
+	 * '[' $LogLevel '] ' $Date ' - ' $clientName ': ' $message
 	 * </code>
 	 * 
-	 * @param level		Das {@link LogLevel}, das zum Filtern verwendet wird.
-	 * @param message	Die zu schreibende Nachricht.
+	 * @param level			Das {@link LogLevel}, das zum Filtern verwendet wird.
+	 * @param clientName	Die Zeichenkette, die als Sender der Nachricht angezeigt
+	 * 						wird.
+	 * @param message		Die zu schreibende Nachricht.
 	 */
-	public synchronized void log( LogLevel level, String message ) {
+	public synchronized void log( LogLevel level, String clientName, String message ) {
 		
 		// Wenn kein Outputstream, dann keine Nachrichten.
 		if ( out == null ) return;
@@ -142,7 +148,7 @@ public class Logger {
 		if ( logLevel.getPriority() >= level.getPriority() ) {
 			
 			try {
-				out.write( level.toString() + " " + (new Date()).toString() + " - " + message + "\n");
+				out.write( level.toString() + " " + (new Date()).toString() + " - " + clientName + ": " + message + "\n");
 				out.flush();
 				
 			} catch (IOException e) {

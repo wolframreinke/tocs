@@ -40,6 +40,8 @@ import de.tungsten.tocs.engine.nodes.Room;
  */
 public class XMLMapProvider implements IMapProvider {
 	
+	public static final String LOG_NAME			= "(CORE) XMLMapProvider";
+	
 	/**
 	 * Die Zeichenkette, die in der Konfigurations-Datei als Wert für den
 	 * Schlüssel "mapLoader" verwendet werden muss, damit ein 
@@ -230,7 +232,7 @@ public class XMLMapProvider implements IMapProvider {
 	private void loadMap( File xml ) throws Exception {
 		
 		logger = Logger.getInstance();
-		logger.log( LogLevel.INFO, "XMLMapProvider: Loading Map \"" + xml.getName() + "\"." );
+		logger.log( LogLevel.INFO, LOG_NAME, "Loading Map \"" + xml.getName() + "\"." );
 		
 		// Speichert die Reference Identifier der Nodes.
 		referenceIDs = new HashMap<String, Node>();
@@ -243,7 +245,7 @@ public class XMLMapProvider implements IMapProvider {
 		Namespace ns = map.getNamespace();
 		String name = map.getAttributeValue( NAME, ns );
 		if ( name == null ) {
-			logger.log( LogLevel.WARNING, "XMLMapProvider: Specified map has no name-attribute." );
+			logger.log( LogLevel.WARNING, LOG_NAME, "Specified map has no name-attribute." );
 			name = "NO_NAME_SPECIFIED";
 		} else name = name.trim();
 		
@@ -263,7 +265,7 @@ public class XMLMapProvider implements IMapProvider {
 				|| counterterroristsSpawnpointID 	== null 
 				|| bombPointID 						== null ) {
 			
-			logger.log( LogLevel.ERROR, "XMLMapProvider: <spawnTerrorists>, <spawnCounterterrorists> and <bombPoint> must be defined." );
+			logger.log( LogLevel.ERROR, LOG_NAME, "<spawnTerrorists>, <spawnCounterterrorists> and <bombPoint> must be defined." );
 			throw new Exception( "Map could not be created." );
 		} else {
 
@@ -275,15 +277,15 @@ public class XMLMapProvider implements IMapProvider {
 			Node bombPoint = referenceIDs.get( bombPointID.trim() );
 			
 			if ( terroristsSpawnpoint == null ) {
-				logger.log( LogLevel.ERROR, "XMLMapProvider: <spawnTerrorists>'s reference ID cannot be resolved to be a Node." );
+				logger.log( LogLevel.ERROR, LOG_NAME, "<spawnTerrorists>'s reference ID cannot be resolved to be a Node." );
 				throw new Exception( "Map could not be created" );
 			
 			} else if ( counterterroristsSpawnpoint == null ) {
-				logger.log( LogLevel.ERROR, "XMLMapProvider: <spawnCounterterrorists>'s reference ID cannot be resolved to be a Node." );
+				logger.log( LogLevel.ERROR, LOG_NAME, "<spawnCounterterrorists>'s reference ID cannot be resolved to be a Node." );
 				throw new Exception( "Map could not be created" );
 				
 			} else if ( bombPoint == null ) {
-				logger.log( LogLevel.ERROR, "XMLMapProvider: <bombPoint>'s reference ID cannot be resolved to be a Node." );
+				logger.log( LogLevel.ERROR, LOG_NAME, "<bombPoint>'s reference ID cannot be resolved to be a Node." );
 				throw new Exception( "Map could not be created" );
 				
 			} else {
@@ -350,7 +352,7 @@ public class XMLMapProvider implements IMapProvider {
 			nameArray[i] = names.get( i - 1 );
 		}
 		
-		logger.log( LogLevel.DEBUG, "XMLMapProvider: Loading Node " + refID + "." );
+		logger.log( LogLevel.DEBUG, LOG_NAME, "Loading Node " + refID + "." );
 		
 		// Jetzt muss der geeignete Konstruktor ausgewählt werden.
 		Node result;
@@ -362,7 +364,7 @@ public class XMLMapProvider implements IMapProvider {
 			case "Room": {
 				// Wenn der Raum keine ReferenceID hat, kann er später nicht gelinkt werden
 				if ( refID == null ) {
-					logger.log( LogLevel.WARNING, "XMLMapProvider: Room \"" + id + "\" has no reference ID and is therefore not accessible." );
+					logger.log( LogLevel.WARNING, LOG_NAME, "Room \"" + id + "\" has no reference ID and is therefore not accessible." );
 				} else {
 					// Für alle existierenden Himmelsrichtungen prüfen, ob der Raum eine
 					// Tür in diese Richtung hat.
@@ -423,7 +425,7 @@ public class XMLMapProvider implements IMapProvider {
 				if ( keyID != null ) {
 					// Wenn der Knoten aber keine ReferenceID hat, kann später auch nichts gelinkt werden.
 					if ( refID == null ) 
-						logger.log( LogLevel.WARNING, "XMLMapProvider: Owner of \"" + keyID.trim() + "\" has no reference ID." );
+						logger.log( LogLevel.WARNING, LOG_NAME, "Owner of \"" + keyID.trim() + "\" has no reference ID." );
 					else {
 						Reference keyReference = new Reference( refID, keyID.trim(), KEY );
 						references.add( keyReference );
@@ -491,10 +493,10 @@ public class XMLMapProvider implements IMapProvider {
 			
 			// Checken ob alle Referenz-Ids in Knoten umgewandelt werden konnten.
 			if ( owner == null ) {
-				logger.log( LogLevel.WARNING, "XMLMapProvider: Could not resolve \"" + reference.getOwnerID() + "\" to a Node." );
+				logger.log( LogLevel.WARNING, LOG_NAME, "Could not resolve \"" + reference.getOwnerID() + "\" to a Node." );
 			} else {
 				if ( target == null ) {
-					logger.log( LogLevel.WARNING, "XMLMapProvider: Could not resolve \"" + reference.getTargetID() + "\" to a Node." );
+					logger.log( LogLevel.WARNING, LOG_NAME, "Could not resolve \"" + reference.getTargetID() + "\" to a Node." );
 				} else {
 					
 					// Es gibt zwei Referenz-Typen, KEY und DIRECTION
@@ -507,7 +509,7 @@ public class XMLMapProvider implements IMapProvider {
 							LockableNode lNode = (LockableNode) owner;
 							lNode.addKey( target.getIdentifier() );
 						} else
-							logger.log( LogLevel.WARNING, "XMLMapProvider: \"" + owner.getIdentifier() + "\"'s <key>-element is ignored." );
+							logger.log( LogLevel.WARNING, LOG_NAME, "\"" + owner.getIdentifier() + "\"'s <key>-element is ignored." );
 					} else {
 						
 						// Nur Räume haben Türen
@@ -525,11 +527,11 @@ public class XMLMapProvider implements IMapProvider {
 									Room targetRoom = (Room) target;
 									room.setAdjacentRoom( direction, targetRoom );
 								} else
-									logger.log( LogLevel.WARNING, "XMLMapProvider: \"" + reference.getTargetID() + "\" is not a room and can therefore not be accessed by \"" + reference.getOwnerID() + "\"." );
+									logger.log( LogLevel.WARNING, LOG_NAME, "\"" + reference.getTargetID() + "\" is not a room and can therefore not be accessed by \"" + reference.getOwnerID() + "\"." );
 							} else
-								logger.log( LogLevel.WARNING, "XMLMapProvider: Could not resolve \"" + type + "\" to a direction." );
+								logger.log( LogLevel.WARNING, LOG_NAME, "Could not resolve \"" + type + "\" to a direction." );
 						} else
-							logger.log( LogLevel.WARNING, "XMLMapProvider: \"" + owner.getIdentifier() + "\"'s <" + type + ">-element is ignored." );
+							logger.log( LogLevel.WARNING, LOG_NAME, "\"" + owner.getIdentifier() + "\"'s <" + type + ">-element is ignored." );
 					}
 				}
 			}

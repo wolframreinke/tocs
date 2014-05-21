@@ -21,6 +21,8 @@ import de.tungsten.tocs.engine.maps.XMLMapProvider;
 
 public class TOCSServer extends Thread {
 	
+	private static final String LOG_NAME				= "(CORE) TOCSServer";
+	
 	private static final String CONFIG_FILE_PATH		= "tocs.conf";
 	
 	private	static final String CONFIG_PORT				= "port";
@@ -82,12 +84,12 @@ public class TOCSServer extends Thread {
 		} 
 		catch ( NullPointerException npe ) {
 			// Kein passender Maploader
-			logger.log( LogLevel.FATAL, "TOCSServer: The map loader \"" + providerID + "\" was not found." );
+			logger.log( LogLevel.FATAL, LOG_NAME, "The map loader \"" + providerID + "\" was not found." );
 			throw new FatalServerError( npe );
 		}
 		catch ( Exception e ) {
 			// Der Maploader will die Map nicht laden, warum auch immer.
-			logger.log( LogLevel.FATAL, "TOCSServer: The map loader \"" + provider.getConfigurationName() + "\" could not load the desired map." );
+			logger.log( LogLevel.FATAL, LOG_NAME, "The map loader \"" + provider.getConfigurationName() + "\" could not load the desired map." );
 			throw new FatalServerError( e );
 		}
 	}
@@ -104,7 +106,7 @@ public class TOCSServer extends Thread {
 			
 			// Socket für diesen Port erstellen
 			ServerSocket server = new ServerSocket( port );
-			logger.log( LogLevel.INFO, "TOCSServer: Listening at port " + port + "." );
+			logger.log( LogLevel.INFO, LOG_NAME, "Listening at port " + port + "." );
 			
 			// Wenn der Benutzer shutdown() aufruft, wird dieser Thread
 			// interruptet.
@@ -113,7 +115,7 @@ public class TOCSServer extends Thread {
 				// client aus Netzwerk accepten
 				Socket client = server.accept();
 				
-				logger.log( LogLevel.INFO, "TOCSServer: New Connection to " + client.getInetAddress() + "." );
+				logger.log( LogLevel.INFO, LOG_NAME, "New Connection to " + client.getInetAddress() + "." );
 				
 				// Zu den Connections adden
 				Connection connection = new Connection( client );
@@ -122,11 +124,11 @@ public class TOCSServer extends Thread {
 			
 			// Socket konventions-konform schließen
 			server.close();
-			logger.log( LogLevel.INFO, "TOCSServer: Server down." );
+			logger.log( LogLevel.INFO, LOG_NAME, "Server down." );
 			
 		} catch (IOException e) {
 			// Fataler Fehler, Server konnte nicht upgesettet werden.
-			logger.log( LogLevel.FATAL, "TOCSServer: Couldn't set up server. Detailed Message: \"" + e.getMessage() +"\"." );
+			logger.log( LogLevel.FATAL, LOG_NAME, "Couldn't set up server. Detailed Message: \"" + e.getMessage() +"\"." );
 		}
 	}
 	

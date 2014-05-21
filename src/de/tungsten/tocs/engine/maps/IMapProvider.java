@@ -9,7 +9,7 @@ package de.tungsten.tocs.engine.maps;
  * Methode, in <code>provideMap</code> selbst) ist nicht definiert und bleibt
  * den Implementattionen überlassen.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface IMapProvider {

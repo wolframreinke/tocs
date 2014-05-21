@@ -6,7 +6,7 @@ package de.tungsten.tocs.engine;
  * verwaltet außerdem, wie viele Mitgleider jedes Team hat, sodass Spieler
  * automatisch dem unterlegenen Team zugeordnet werden können.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public enum Team {

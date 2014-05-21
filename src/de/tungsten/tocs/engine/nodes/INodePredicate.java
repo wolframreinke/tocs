@@ -4,7 +4,7 @@ package de.tungsten.tocs.engine.nodes;
  * Ein Prädikat das überprüft, ob {@link Node Knoten} einer bestimmten
  * Bedingung genügen.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface INodePredicate {

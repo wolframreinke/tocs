@@ -5,7 +5,7 @@ package de.tungsten.tocs.engine.nodes;
  * Subklassen verwendet, um Fehler anzuzeigen. Der den Fehler verursachende 
  * Knoten kann über die {@link #nodeID} ermittelt werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 @SuppressWarnings("serial")

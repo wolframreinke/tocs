@@ -21,7 +21,7 @@ import java.util.Set;
  * kann. Dabei ist "Raum" nur ein allgemeines Wort, auch offenene Plätze können
  * so modelliert werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Room extends LockableNode {

@@ -13,7 +13,7 @@ package de.tungsten.tocs.net;
  * Interfaces beispielsweise eine Verbindung zur lokalen Konsole hergestellt
  * werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface IConnection  {

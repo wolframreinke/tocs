@@ -35,7 +35,7 @@ import de.tungsten.tocs.engine.nodes.Room;
  * Konfigurations-Datei der Schlüssel "mapLoader" auf "XMLMapProvider" gesetzt
  * werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class XMLMapProvider implements IMapProvider {
@@ -59,7 +59,7 @@ public class XMLMapProvider implements IMapProvider {
 	 * Zeichenkette wird zusammen mit dem Referenztyp und dem 
 	 * <code>LockableNode</code> als <code>Reference</code> gespeichert.
 	 * 
-	 * @author Wolfram
+	 * @author tungsten
 	 *
 	 */
 	private class Reference {

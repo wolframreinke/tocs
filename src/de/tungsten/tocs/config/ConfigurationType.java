@@ -10,7 +10,7 @@ package de.tungsten.tocs.config;
  * <p>
  * Dieser <code>enum</code> wird eventuell noch erweitert.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public enum ConfigurationType {

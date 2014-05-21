@@ -10,6 +10,7 @@
     <complexType name="weapon_t">
     	<sequence>
     		<element name="name" type="string"></element>
+    		<element name="description" type="string" minOccurs="1" maxOccurs="1"></element>
     		<element name="category" type="string"></element>
     		<element name="capacity" type="int"></element>
     		<element name="rate" type="int"></element>

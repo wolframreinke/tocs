@@ -19,7 +19,7 @@ package de.tungsten.tocs.engine.parsing;
  * <li> {@link #TO}.
  * </ul>
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public enum Preposition {

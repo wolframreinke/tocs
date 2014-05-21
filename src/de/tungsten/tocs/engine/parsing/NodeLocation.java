@@ -9,7 +9,7 @@ import java.util.List;
  * <code>Collection</code> muss zuerst lokalisiert werden, dann das zweite, und so
  * weiter.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class NodeLocation implements Iterable<String> {

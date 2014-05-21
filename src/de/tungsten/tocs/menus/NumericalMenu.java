@@ -21,7 +21,7 @@ import de.tungsten.tocs.net.IConnection;
  * Gibt der Benutzer eine gültige Zahl ein, wird er an das mit dieser Option
  * verknüpfte Menu weitergeleitet (siehe {@link #addOption(String, IMenu)}).
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class NumericalMenu implements IMenu {
@@ -31,7 +31,7 @@ public class NumericalMenu implements IMenu {
 	 * aus einem anzuzeigenden text und dem Menu, an das der Benutzer
 	 * weitergeleitet wird, wenn er diese Option wählt.
 	 * 
-	 * @author Wolfram
+	 * @author tungsten
 	 *
 	 */
 	private class Option {

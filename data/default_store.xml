@@ -4,6 +4,7 @@
 	<weapon>
 		<category>Pistol</category>
 		<name>Glock 18</name>
+		<description>VORLÄUFIG</description>
 		<capacity>20</capacity>
 		<rate>1</rate>
 		<damage>3</damage>
@@ -12,6 +13,7 @@
 	<weapon>
 		<category>Pistol</category>
 		<name>USP Tactical</name>
+		<description>VORLÄUFIG</description>
 		<capacity>12</capacity>
 		<rate>1</rate>
 		<damage>3</damage>
@@ -20,6 +22,7 @@
 	<weapon>
 		<category>Pistol</category>
 		<name>P228</name>
+		<description>VORLÄUFIG</description>
 		<capacity>13</capacity>
 		<rate>1</rate>
 		<damage>3</damage>
@@ -28,6 +31,7 @@
 	<weapon>
 		<category>Pistol</category>
 		<name>Desert Eagle .50 AE</name>
+		<description>VORLÄUFIG</description>
 		<capacity>7</capacity>
 		<rate>1</rate>
 		<damage>5</damage>
@@ -36,6 +40,7 @@
 	<weapon team="counter-terrorists">
 		<category>Pistol</category>
 		<name>FN Five-seveN</name>
+		<description>VORLÄUFIG</description>
 		<capacity>20</capacity>
 		<rate>1</rate>
 		<damage>3</damage>
@@ -44,6 +49,7 @@
 	<weapon team="terrorists">
 		<category>Pistol</category>
 		<name>Dual 96G Elite Berettas</name>
+		<description>VORLÄUFIG</description>
 		<capacity>30</capacity>
 		<rate>2</rate>
 		<damage>3</damage>
@@ -54,6 +60,7 @@
 	<weapon>
 		<category>Assault Rifle</category>
 		<name>AK-47 (Kalaschnikow)</name>
+		<description>VORLÄUFIG</description>
 		<capacity>31</capacity>
 		<rate>3</rate>
 		<damage>5</damage>

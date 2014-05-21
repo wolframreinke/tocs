@@ -17,7 +17,7 @@ import java.util.Set;
  * <code>ARGUMENTS</code> stellt eine Menge von zusätzlichen Argumenten dar, die
  * jeweils aus einer <code>Preposition</code> und mehreren Identifiers besteht.
  * 
- * @author Wolfram
+ * @author tungsten
  * @see #InstructionParser
  */
 public class Instruction {

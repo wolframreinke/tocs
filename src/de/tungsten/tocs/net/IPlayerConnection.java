@@ -11,7 +11,7 @@ import de.tungsten.tocs.engine.nodes.Player;
  * (oder sonstigen physikalischen)-Verbindung zu einem Spieler und dem
  * Spieler-Knoten im Spiel dar.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface IPlayerConnection extends IConnection {

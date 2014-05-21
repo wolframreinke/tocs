@@ -8,7 +8,7 @@ import de.tungsten.tocs.net.IPlayerConnection;
  * Unterstützung neuer Befehle hinzuzufügen, muss so lediglich eine neue Implementation
  * erstellt werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface IParser {

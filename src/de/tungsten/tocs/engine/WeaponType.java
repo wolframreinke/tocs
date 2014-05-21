@@ -15,7 +15,7 @@ import de.tungsten.tocs.engine.nodes.WeaponNode;
  * AK-47 haben). Einzelne Waffen werden durch die Klasse 
  * {@link WeaponNode} abgebildet.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class WeaponType {

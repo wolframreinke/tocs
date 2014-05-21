@@ -12,7 +12,7 @@ import de.tungsten.tocs.net.IConnection;
  * wird. Die Rückgabewerte der einzelnen Submenus werden dabei in einer
  * Liste verwaltet.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class MenuSequence implements IMenu {

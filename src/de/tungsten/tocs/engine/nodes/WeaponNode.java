@@ -7,7 +7,7 @@ import de.tungsten.tocs.engine.WeaponType;
  * repräsentiert. Ein Waffenknoten kann abgefeuert und nachgeladen werden.
  * Der Typ der Waffe wird mit {@link #getType()} abgefragt.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class WeaponNode extends Node {

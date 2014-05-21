@@ -33,7 +33,7 @@ import java.util.Map;
  * (das Attribut "schlafend" könnte sich hier von true nach false ändern). 
  * 
  *  
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Node {

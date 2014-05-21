@@ -13,7 +13,7 @@ import de.tungsten.tocs.engine.nodes.Player;
  * Spielereingaben einfach, und <code>Node</code> möglichst allgemein zu halten, können
  * die hier definierten Methode verwendet werden.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public abstract class NodeLocator {

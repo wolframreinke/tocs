@@ -11,7 +11,7 @@ import java.util.Stack;
  * Erstellt ein {@link Instruction}-Objekt aus der Eingabe eines Spielers. Für Details,
  * siehe {@link #createInstruction(String)}.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public abstract class InstructionParser {

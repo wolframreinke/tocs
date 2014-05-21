@@ -10,7 +10,7 @@ package de.tungsten.tocs.engine.nodes;
  * aber nicht auf- und abgeschlossen werden. Für diese Funktionalität steht
  * {@link LockableNode} bereit.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class OpenableNode extends Node {

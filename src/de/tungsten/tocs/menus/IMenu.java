@@ -7,7 +7,7 @@ import de.tungsten.tocs.net.IConnection;
  * Spiel. Um ein einheitliches "Look 'n' Feel" zu erzeugen können die
  * Implementationen verwendet werden, um den User zu einer Eingabe aufzufordern.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public interface IMenu {

@@ -6,7 +6,7 @@ package de.tungsten.tocs.net;
  * darf der entsprechende {@link TOCSServer} nicht weiter betrieben werden,
  * da sein Verhalten undefiniert ist.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 @SuppressWarnings("serial")

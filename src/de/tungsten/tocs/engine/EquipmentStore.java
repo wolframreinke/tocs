@@ -36,7 +36,7 @@ public class EquipmentStore implements ISubSystem {
 	 * Eine Waffenkategorie wie z.B. "Sturmgewehr". Diese Klasse besteht aus dem
 	 * Namen der Kategorie und allen Waffen, die dazu gehören.
 	 * 
-	 * @author Wolfram
+	 * @author tungsten
 	 *
 	 */
 	private class Category {

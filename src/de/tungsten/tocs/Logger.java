@@ -18,7 +18,7 @@ import java.util.Date;
  * Da in TOCS viele Threads zum Einsatz kommen, sind alle Logging-Methoden
  * thread-safe (soweit ich das einschätzen kann).
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Logger {

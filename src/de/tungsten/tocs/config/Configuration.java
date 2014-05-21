@@ -34,7 +34,7 @@ import de.tungsten.tocs.Logger;
  * ihrem Aufruf werden die Einstellungen nicht mehr aus der Konfigurationsdatei
  * geladen, sonder direkt die Standardwerte zurückgegeben.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Configuration {

@@ -14,7 +14,7 @@ import de.tungsten.tocs.net.IPlayerConnection;
  * Diese Klasse ist als Singleton implementiert, das heiﬂt alle Objekte teilen sich
  * dieselben Parser.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Parsers {

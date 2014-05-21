@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * TODO Neu designen?
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class LockableNode extends OpenableNode {

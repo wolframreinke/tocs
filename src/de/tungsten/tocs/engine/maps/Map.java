@@ -16,7 +16,7 @@ import de.tungsten.tocs.net.IPlayerConnection;
  * <code>Map</code> beinhaltet Funktionalitäten zum spawnen von 
  * Spielern auf der Karte.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Map {

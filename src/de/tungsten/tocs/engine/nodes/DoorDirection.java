@@ -16,7 +16,7 @@ package de.tungsten.tocs.engine.nodes;
  * 	<li> {@link #UP} - "up"
  * 	<li> {@link #DOWN} - "down"
  * </ul>
- * @author Wolfram
+ * @author tungsten
  *
  */
 public enum DoorDirection {

@@ -11,7 +11,7 @@ package de.tungsten.tocs;
  * <li> {@link #DEBUG}
  * </ol>
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public enum LogLevel {

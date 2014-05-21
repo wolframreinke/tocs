@@ -9,7 +9,7 @@ import de.tungsten.tocs.engine.parsing.NodeLocator;
  * Ein Spieler ist ein {@link Node Knoten} der einen Nickname, Geld, ein Team, ein
  * Inventar und Hände hat.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 public class Player extends Node {

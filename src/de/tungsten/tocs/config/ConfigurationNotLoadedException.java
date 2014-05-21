@@ -10,7 +10,7 @@ package de.tungsten.tocs.config;
  * jeder Nutzer von {@link Configuration} diese Exception abfangen müssen
  * soll.
  * 
- * @author Wolfram
+ * @author tungsten
  *
  */
 @SuppressWarnings("serial")

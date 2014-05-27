@@ -12,9 +12,9 @@ import java.util.Set;
  * <p>
  * Die Türen sind nichts als Referenzen auf andere <code>Room</code>s. Alle
  * erreichbaren Räume können mit {@link #getAdjacentRooms()} erfragt werden,
- * einzelne Räume mit {@link #getAdjacentRoom(DoorDirection)}. Um herauszufinden,
+ * einzelne Räume mit {@link #getAdjacentRoom(Direction)}. Um herauszufinden,
  * ob ein Raum in einer gegebenen Richtung liegt, kann 
- * {@link #canAccess(DoorDirection)} verwendet werden.
+ * {@link #canAccess(Direction)} verwendet werden.
  * <p>
  * Spieler in TOCS können nur innerhalb von <code>Room</code>-Knoten platziert
  * werden, sie stellen somit die Umgebung dar, in der sich der Spieler bewegen
@@ -106,7 +106,7 @@ public class Room extends LockableNode {
 	
 	/**
 	 * Ermöglicht das iterieren über alle von diesem Raum aus erreichbaren
-	 * (siehe {@link #canAccess(DoorDirection)}) Räume.
+	 * (siehe {@link #canAccess(Direction)}) Räume.
 	 * 
 	 * @return	Ein <code>Iterable&lt;Room&gt;</code>, welches das iterieren
 	 * 			über alle erreichbaren Räume ermöglicht.
@@ -125,7 +125,7 @@ public class Room extends LockableNode {
 	
 	/**
 	 * Gibt den Raum zurück, der in der gegebenen Richtung liegt,
-	 * unabhängig davon, ob der {@link #canAccess(DoorDirection) erreichbar}
+	 * unabhängig davon, ob der {@link #canAccess(Direction) erreichbar}
 	 * ist.
 	 * 
 	 * @param direction		Die Richtung, in der der gewünschte Raum liegt.
@@ -141,8 +141,8 @@ public class Room extends LockableNode {
 	/**
 	 * Erstellt eine Verbindung von diesem Raum zu dem gegebenen Raum in
 	 * die gegebene Richtung. Der Aufruf von
-	 * {@link #getAdjacentRoom(DoorDirection)} mit derselbe 
-	 * <code>DoorDirection</code> gibt von nun an den gegebenen Raum zurück.
+	 * {@link #getAdjacentRoom(Direction)} mit derselbe 
+	 * <code>Direction</code> gibt von nun an den gegebenen Raum zurück.
 	 * 
 	 * @param direction		Die Richtung, in die der Raum hinzugefügt werden
 	 * 						aoll.

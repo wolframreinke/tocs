@@ -12,22 +12,23 @@ import de.tungsten.tocs.net.IPlayerConnection;
  * Anfrage an diese weiter.
  * <p>
  * Diese Klasse ist als Singleton implementiert, das heißt alle Objekte teilen sich
- * dieselben Parser.
+ * dieselben Parser. Die einzige existente Instanz kann mit {@link #getInstance()}
+ * erreicht werden.
  * 
  * @author tungsten
  *
  */
 public class Parsers {
 
-	// Singleton Implementation
 	private static Parsers instance = null;
 	private Parsers() {}
 	
 	/**
-	 * Gibt die einzige existierende Instanz von <code>Parsers</code> zurück.
-	 * Sie wird erst erstellt, wenn sie zum ersten Mal angefordert wird.
+	 * Gibt die einzige existierende Instanz der Klasse <code>Parsers</code>
+	 * zurück. Die Instanz wird erst erstellt, wenn sie zum ersten Mal angefordert
+	 * wird.
 	 * 
-	 * @return
+	 * @return	Die einzige existierende Instanz dieser Klasse.
 	 */
 	public static Parsers getInstance() {
 		if ( instance == null )

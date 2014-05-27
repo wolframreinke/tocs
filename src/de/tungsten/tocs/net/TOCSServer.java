@@ -9,7 +9,8 @@ import java.util.List;
 import de.tungsten.tocs.LogLevel;
 import de.tungsten.tocs.Logger;
 import de.tungsten.tocs.config.Configuration;
-import de.tungsten.tocs.config.ConfigurationType;
+import de.tungsten.tocs.config.IntegerType;
+import de.tungsten.tocs.config.StringType;
 import de.tungsten.tocs.engine.maps.IMapProvider;
 import de.tungsten.tocs.engine.maps.Map;
 import de.tungsten.tocs.engine.maps.XMLMapProvider;
@@ -55,7 +56,7 @@ public class TOCSServer extends Thread {
 		// Log-Level aus den Konfigurationen auslesen
 		logger.setLogLevel( (int) configuration.getValue( 
 				CONFIG_LOGLEVEL, 
-				ConfigurationType.INTEGER,
+				IntegerType.getInstance(),
 				DEFAULT_LOGLEVEL ) );
 		
 		// Den MapProvider aus den Konfigurationen auslesen
@@ -63,7 +64,7 @@ public class TOCSServer extends Thread {
 		List<IMapProvider> providers = new ArrayList<IMapProvider>();
 		String providerID = (String) configuration.getValue( 
 				CONFIG_MAP_LOADER, 
-				ConfigurationType.STRING, 
+				StringType.getInstance(), 
 				DEFAULT_MAP_LOADER );
 		
 		// Vergleichsliste; Alle verfügbaren MapProvider kommen in diese
@@ -101,7 +102,7 @@ public class TOCSServer extends Thread {
 			// Port aus der Konfig-Datei auslesen
 			int port = (int) configuration.getValue( 
 					CONFIG_PORT, 
-					ConfigurationType.INTEGER, 
+					IntegerType.getInstance(), 
 					DEFAULT_PORT );
 			
 			// Socket für diesen Port erstellen

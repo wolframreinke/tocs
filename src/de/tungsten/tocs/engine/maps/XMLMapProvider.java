@@ -17,7 +17,7 @@ import org.jdom2.input.SAXBuilder;
 import de.tungsten.tocs.LogLevel;
 import de.tungsten.tocs.Logger;
 import de.tungsten.tocs.config.Configuration;
-import de.tungsten.tocs.config.ConfigurationType;
+import de.tungsten.tocs.config.StringType;
 import de.tungsten.tocs.engine.Team;
 import de.tungsten.tocs.engine.nodes.DoorDirection;
 import de.tungsten.tocs.engine.nodes.LockableNode;
@@ -186,7 +186,7 @@ public class XMLMapProvider implements IMapProvider {
 	public XMLMapProvider() {
 		String path = (String) Configuration.getInstance().getValue(
 				CONFIG_MAP_PATH,
-				ConfigurationType.STRING, 
+				StringType.getInstance(), 
 				DEFAULT_MAP_PATH );
 		
 		this.xmlFile = new File( path );
@@ -457,8 +457,12 @@ public class XMLMapProvider implements IMapProvider {
 		// Jetzt Unterelemente laden.
 		List<Element> childNodeElements = xmlElement.getChildren( NODE, ns );
 		for (Element element : childNodeElements) {
-			Node childNode = loadNode( result, element );
-			result.addChild( childNode );
+			logger.log( LogLevel.DEBUG, LOG_NAME, "<" + element.getName() + ">" + element.getChildText( "refID" , element.getNamespace() ) + "</" + element.getName() + ">" );
+		}
+		
+		for (Element element : childNodeElements) {
+			loadNode( result, element );
+			
 		}
 		
 		return result;

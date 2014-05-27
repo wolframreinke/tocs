@@ -2,7 +2,7 @@ package de.tungsten.tocs.engine.parsing;
 
 import java.util.List;
 
-import de.tungsten.tocs.engine.nodes.INodePredicate;
+import de.tungsten.tocs.engine.nodes.IPredicate;
 import de.tungsten.tocs.engine.nodes.Node;
 import de.tungsten.tocs.engine.nodes.Player;
 
@@ -17,6 +17,45 @@ import de.tungsten.tocs.engine.nodes.Player;
  *
  */
 public abstract class NodeLocator {
+	
+	/**
+	 * Sucht nach Knoten, die dieselbe, oder eine von <code>type</code> 
+	 * abgeleitete Klasse haben. Der erste gefundene Knoten wird als Ergebnis 
+	 * dieser Methode zurückgegeben.
+	 * <p>
+	 * Wenn keine Knoten gefunden werden, die der Suchbedingung entsprechen,
+	 * wird <code>null</code> zurückgegeben.
+	 * <p>
+	 * Diese Suche ist als Tiefensuche (Deep-First) implementiert. Daher ist der
+	 * Rückgabewert nicht der passende Knoten, der sich am nächsten zum
+	 * gegebenen Parent-Knoten befindet, sondern der Knoten, der am weitesten
+	 * links im Knoten-Baum gefunden wurde.
+	 * 
+	 * @param type		Der Datentyp des gesuchten Knotens. Dieser Wert darf
+	 * 					nicht <code>null</code> sein.
+	 * @param parent	Der Knoten in dessen Kind-Knoten sich der gesuchte Knoten
+	 * 					befindet. Dieser Wert darf nicht <code>null</code> sein.
+	 * @param depth		Die maximale Suchtiefe. Negative Werte stehen für eine
+	 * 					unbegrenzte Suchtiefe.
+	 * @return			Ein <code>Node</code>, der den gegebenen Datentyp hat,
+	 * 					und der sich maximal <code>depth</code> Ebenen unter
+	 * 					dem Knoten <code>parent</code> befindet.
+	 */
+	public static Node findSubNode( final Class<? extends Node> type, Node parent, int depth ) {
+		
+		IPredicate<Node> classComparison = new IPredicate<Node>() {
+			@Override
+			public boolean matches( Node node ) {
+				return node.getClass().isAssignableFrom( type );
+			}
+		};
+		
+		List<Node> result = parent.find( classComparison, depth );
+		if ( result != null && result.size() > 0 )
+			return result.get( 0 );
+		else
+			return null;
+	}
 	
 	/**
 	 * Sucht nach Knoten mit dem gegebenen Namen, die Kind-Knoten des gegebenen
@@ -41,7 +80,7 @@ public abstract class NodeLocator {
 	public static Node findSubNode( final String name, Node parent, int depth ) {
 
 		// Anonyme Klasse für find(...) in Node
-		INodePredicate nameComparison = new INodePredicate() {
+		IPredicate<Node> nameComparison = new IPredicate<Node>() {
 			
 			@Override
 			public boolean matches( Node node ) {

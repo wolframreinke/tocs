@@ -1,7 +1,7 @@
 package de.tungsten.tocs.engine.nodes;
 
 import de.tungsten.tocs.config.Configuration;
-import de.tungsten.tocs.config.ConfigurationType;
+import de.tungsten.tocs.config.IntegerType;
 import de.tungsten.tocs.engine.Team;
 import de.tungsten.tocs.engine.parsing.NodeLocator;
 
@@ -29,6 +29,11 @@ public class Player extends Node {
 	private int credit;
 	
 	/**
+	 * Die "Lebensenergie" dieses Spielers in Prozent.
+	 */
+	private int hitPoints;
+	
+	/**
 	 * Erstellt einen neuen Spieler unter Vergabe eines Nicknames und eines Teams. Als
 	 * Unterknoten werden automatisch das Inventar und die Hände des Spielers erstellt.
 	 * Der Startguthaben wird aus der Konfigurationsdatei gelesen.
@@ -46,12 +51,13 @@ public class Player extends Node {
 				"This is " + nickname + "." );
 		
 		this.team = team;
+		this.hitPoints = 100; // 100% Lebensenergie
 		
 		// Startguthaben aus Configuration ziehen
 		Configuration config = Configuration.getInstance();
 		credit = (int) config.getValue(
 				CONFIG_PLAYER_CREDIT, 
-				ConfigurationType.INTEGER, 
+				IntegerType.getInstance(),
 				DEFAULT_PLAYER_CREDIT );
 		
 		// Ein Inventar und ein Paar Hände erstellen.
@@ -157,5 +163,28 @@ public class Player extends Node {
 	public Node getHands() {
 		
 		return NodeLocator.findSubNode( Node.NODE_HANDS, this, 1 );
+	}
+	
+	/**
+	 * Lässt diesen Spieler Schaden erleiden, sodass seine Hitpoints abnehmen.
+	 * Wenn er weniger als oder genau 0 Hitpoints hat, stirbt dieser Spieler.
+	 * Ob der Spieler tot ist, kann mit {@link #isDead()} abgefragt werden.
+	 * 
+	 * @param damage	Der anzurichtende Schaden.
+	 */
+	public void takeDamage( int damage ) {
+		
+		hitPoints -= damage;
+	}
+	
+	/**
+	 * Gibt zurück, ob dieser Spieler tot ist, d.h. ob der weniger als oder genau
+	 * 0 Hitpoints hat.
+	 * 
+	 * @return	<code>true</code>, wenn der Spieler weniger als oder genau 0
+	 * 			Hitpoints hat, ansonsten <code>false</code>.
+	 */
+	public boolean isDead() {
+		return hitPoints <= 0;
 	}
 }

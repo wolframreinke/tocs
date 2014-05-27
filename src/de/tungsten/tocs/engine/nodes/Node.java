@@ -475,7 +475,7 @@ public class Node {
 	 * 					Filter ist die Suchtiefe (siehe oben). Die Werte sind
 	 * 					wie in der Beschreibung der Methode vermerkt geordnet.
 	 */
-	public List<Node> find( INodePredicate predicate, int depth ) {
+	public List<Node> find( IPredicate<Node> predicate, int depth ) {
 		
 		List<Node> result = new ArrayList<Node>();
 		
@@ -547,5 +547,24 @@ public class Node {
 		description = description.replace( "\n ", "\n" );
 		
 
+	}
+	
+	@Override
+	public String toString() {
+		return toString( 0 );
+	}
+	
+	private String toString( int depth ) {
+		String result = "";
+		for (int i = 0; i < depth; i++) {
+			result += "\t";
+		}
+		
+		result += getIdentifier();
+		for (Node child : getChildren()) {
+			result += "\n" + child.toString( depth + 1 );
+		}
+		
+		return result;
 	}
 }

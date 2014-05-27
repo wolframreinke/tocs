@@ -18,8 +18,9 @@ import de.tungsten.tocs.net.IPlayerConnection;
  * wurde, werden alle Spieler, die bereits ready sind gespawnt. Alle anderen Spieer werden sofot gespawnt, wenn sie selbst
  * bereit sind.
  * <p>
- * Diese Klasse wurde als Singleton implementiert, d.h. alle <code>IPlayerConnection</code>s im Spiel teilen sich eine
- * gemeinsame Lobby.
+ * Diese Klasse ist als Singleton implementiert, d.h. alle Objekte teilen sich 
+ * dieselbe Instanz von <code>Lobby</code>. Auf diese Instanz kann mit
+ * {@link #getInstance()} erreicht werden.
  * 
  * @author reinke.wolfram-tit13
  *
@@ -75,6 +76,22 @@ public class Lobby  {
 		}
 	}
 	
+	private static Lobby instance = null;
+	private Lobby() {}
+	
+	/**
+	 * Gibt die einzige existierende Instanz dieser Klasse zur�ck. Die Instanz
+	 * wird erst erstellt, wenn sie zum ersten Mal angefordert wird.
+	 * 
+	 * @return	Die einzige existierende Instanz von <code>Lobby</code>.
+	 */
+	public static Lobby getInstance() {
+		if ( instance == null )
+			instance = new Lobby();
+		
+		return instance;
+	}
+	
 	/**
 	 * Die <code>IPlayerConnection</code>s die sich gerade in der Lobby befinden.
 	 */
@@ -90,21 +107,6 @@ public class Lobby  {
 	 * (<code>false</code>).
 	 */
 	private boolean gameRunning = false;
-	
-	// Singleton implementation
-	private static Lobby instance = null;
-	private Lobby() {}
-	
-	/**
-	 * Gibt die einzige existierende Instanz von <code>Lobby</code> zurück. Dabei wird Lazy Initialization verwendet,
-	 * das heißt, die Instanz wird erst erstellt, wenn sie zum ersten Mal gebraucht wird.
-	 */
-	public static Lobby getInstance() {
-		if ( instance == null )
-			instance = new Lobby();
-		
-		return instance;
-	}
 	
 	/**
 	 * Fügt die gegebene <code>IPlayerConnection</code> zur <code>Lobby</code> hinzu. Der Spieler wird dabei noch nicht

@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.List;
 
 import de.tungsten.tocs.config.Configuration;
-import de.tungsten.tocs.config.ConfigurationType;
+import de.tungsten.tocs.config.IntegerType;
 import de.tungsten.tocs.engine.Lobby;
 import de.tungsten.tocs.engine.LobbySubSystem;
 import de.tungsten.tocs.engine.Team;
@@ -46,12 +46,12 @@ public class Connection extends Thread implements IPlayerConnection, Closeable {
 		// retries und timeout aus den Konfigurationen auslesen
 		retries = (int) config.getValue(
 				CONFIG_RETRIES, 
-				ConfigurationType.INTEGER, 
+				IntegerType.getInstance(), 
 				DEFAULT_RETRIES );
 		
 		timeout = (int) config.getValue( 
 				CONFIG_TIMEOUT, 
-				ConfigurationType.INTEGER, 
+				IntegerType.getInstance(), 
 				DEFAULT_TIMEOUT );
 		
 		try {
@@ -121,8 +121,8 @@ public class Connection extends Thread implements IPlayerConnection, Closeable {
 	private void sendToLobby() {
 		
 		// Ab in die Lobby
-		LobbySubSystem lobby = Lobby.getInstance().assignLobbySubSystem( this );
-		lobby.operate( this );
+		LobbySubSystem subSystem = Lobby.getInstance().assignLobbySubSystem( this );
+		subSystem.operate( this );
 		
 		// Wenn die operate methode zurückkehrt, darf der Spieler spawnen
 		TOCSServer.getMap().spawn( this );

@@ -68,6 +68,7 @@ public class WeaponType {
 	public WeaponType( String name, String description, int capacity, int rate, int damage, int price ) {
 		super();
 		this.name = name;
+		this.description = description;
 		this.capacity = capacity;
 		this.rate = rate;
 		this.damage = damage;

@@ -45,7 +45,7 @@ public class Configuration {
 	 * Die Eintrage aus der Konfigurations-Datei. Diese Map wird beim Aufruf
 	 * von {@link #loadFromFile(String)} gefüllt und sonst nicht verändert.
 	 */
-	private Map<String, Object> values = null;
+	private Map<String, String> values = null;
 	
 	/**
 	 * Dieses Flag gibt an, ob die Konfigurations-Einträge aus der Datei
@@ -79,11 +79,16 @@ public class Configuration {
 	 * {@link #useDefaultValues} den Wert <code>true</code> hat, wird der 
 	 * gegebene <code>defaultValue</code> verwendet.
 	 * <p>
-	 * Der Rückgabewert hat den zum gegebenen <code>type</code> passenden
-	 * Typ (Siehe {@link ConfigurationType}).
+	 * Mit Hilfe des gegebenen {@link IConfigurationType}s wird überprüft,
+	 * ob der Konfigurations-Eintrag den richtigen Typ hat. So kann im Falle
+	 * eines Typ-Fehlers der <code>defaultValue</code> zurückgegeben werden.
+	 * Sollen keine Typüberprüfungen durchgeführt werden, muss für 
+	 * <code>type</code> <code>null</code> übergeben werden.
 	 * 
 	 * @param key			Der Name des Konfigurations-Eintrages.	
-	 * @param type			Der Typ des Rückgabewertes.
+	 * @param type			Eine Implementation von <code>IConfigurationType</code>,
+	 * 						um semantische Fehler abzufangen. Um die Typprüfung
+	 * 						abzustellen, kann <code>null</code> übergeben werden.
 	 * @param defaultValue	Dieser Wert wird zurückgegeben, wenn der gewünschte
 	 * 						und der tatsächliche Typ nicht übereinstimmen,
 	 * 						wenn kein entsprechender Eintrag gefunden wurde
@@ -93,7 +98,7 @@ public class Configuration {
 	 * 						der Konfigurations-Datei, oder den <code>
 	 * 						defaultValue</code> (siehe oben).
 	 */
-	public Object getValue( String key, ConfigurationType type, Object defaultValue ) {
+	public Object getValue( String key, IConfigurationType type, Object defaultValue ) {
 		
 		if ( useDefaultValues )
 			return defaultValue;
@@ -103,21 +108,29 @@ public class Configuration {
 		if ( values == null ) 
 			throw new ConfigurationNotLoadedException();
 		
-		Object value = values.get( key );
+		String value = values.get( key );
 		
 		if ( value == null ) {
 			// Wert existiert nicht in der HashMap
 			return defaultValue;
 		}
-		else if ( !checkType( value, type ) ) {
+		else {
+
+			if ( type == null )
+				return value;
 			
-			// Semantischer Fehler: Typen stimmen nicht überein.
-			Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "Semantic error in configuration file: \"" + key + "\" must have the type " + type + ".");
-			return defaultValue;
+			Object result = type.parse( value );
+			
+			if ( result == null ) {
+				// Semantischer Fehler: Typen stimmen nicht überein.
+				Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "Semantic error in configuration file: \"" + key + "\" must have the type " + type + ".");
+				return defaultValue;
+			}
+			else {
+				
+				return result;
+			}
 		}
-		else	 
-			return cast( value, type ) ; // Den Eintrag zum gewünschten Typ
-										 // casten
 	}
 	
 	/**
@@ -158,7 +171,7 @@ public class Configuration {
 	 */
 	public void loadFromFile( String configFilePath ) {
 		
-		values = new HashMap<String, Object>();
+		values = new HashMap<String, String>();
 		
 		if ( configFilePath == null ) return;
 		
@@ -195,64 +208,5 @@ public class Configuration {
 			Logger.getInstance().log( LogLevel.WARNING, LOG_NAME, "No configuration file at " + configFilePath + ".");
 		}
 		
-	}
-	
-	/**
-	 * Gibt <code>true</code> zurück, wenn der gegebene <code>value</code> den
-	 * gegebenen <code>type</code> hat. 
-	 * 
-	 * @see {@link ConfigurationType}
-	 * 
-	 * @param value		Der zu überprüfende Wert.
-	 * @param type		Der gewünschte Typ.
-	 * @return			Ob der gewünschte und der tatsächliche Typ des
-	 * 					<code>value</code>s übereinstimmen.
-	 */
-	private boolean checkType( Object value, ConfigurationType type ) {
-		
-		try {
-			
-			switch ( type ) {
-		
-			case INTEGER:
-				Integer.parseInt( (String) value );
-				return true;
-				
-			case NUMERICAL:
-				Double.parseDouble( (String) value );
-				return true;
-				
-			default:
-				// Der dritte Typ ist String.
-				// Ein String ist value definitiv.
-				return true;
-				
-			}
-		
-		} catch ( Exception e ) {
-			return false;
-		}
-	}
-	
-	/**
-	 * Gibt ein in den gewünschten <code>type</code> gecastetes Object
-	 * zurück. Zuvor sollte {@link #checkType(Object, ConfigurationType)}
-	 * mit den selben Parametern aufgerufen werden, um keine Fehler zu 
-	 * produzieren.
-	 * 
-	 * @param value		Das zu castende Objekt.
-	 * @param type		Der gewünschte Typ.
-	 * @return			Das gegebene Objekt, jetzt allerdings in den
-	 * 					gewünschten Typ gecastet.
-	 */
-	private Object cast( Object value, ConfigurationType type ) {
-		switch ( type ) {
-		
-		// checkType wurde (hoffentlich) vorher verwendet...
-		case INTEGER: 		return Integer.parseInt( (String) value );	
-		case NUMERICAL: 	return Double.parseDouble( (String) value );
-		default:		 	return value;
-		
-		}
 	}
 }

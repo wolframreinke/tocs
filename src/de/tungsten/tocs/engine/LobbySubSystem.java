@@ -3,7 +3,7 @@ package de.tungsten.tocs.engine;
 import java.io.File;
 
 import de.tungsten.tocs.config.Configuration;
-import de.tungsten.tocs.config.ConfigurationType;
+import de.tungsten.tocs.config.StringType;
 import de.tungsten.tocs.menus.IMenu;
 import de.tungsten.tocs.menus.NumericalMenu;
 import de.tungsten.tocs.menus.NumericalSelector;
@@ -136,7 +136,7 @@ public class LobbySubSystem implements ISubSystem {
 					// Store aus der Konfiguration laden
 					String fileName = (String) Configuration.getInstance().getValue( 
 							CONFIG_STORE_PATH, 
-							ConfigurationType.STRING, 
+							StringType.getInstance(),
 							DEFAULT_STORE_PATH );
 					
 					// Spieler einkaufen schicken
